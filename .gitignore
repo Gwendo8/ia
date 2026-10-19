@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Secrets — ne jamais commit
+.env
+.env.*
+*.pem
+*.key
+
+# Réglages locaux Claude Code
+.claude/settings.local.json
+
+# Dépendances éventuelles (scripts de hooks)
+node_modules/
+__pycache__/

@@ -1,0 +1,13 @@
+{
+  "name": "gwendo8",
+  "owner": {
+    "name": "Gwendo8"
+  },
+  "plugins": [
+    {
+      "name": "ia-kit",
+      "source": "./plugins/ia-kit",
+      "description": "Mes skills, commandes, agents et hooks Claude Code réutilisables."
+    }
+  ]
+}
