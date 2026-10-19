@@ -4,6 +4,7 @@
 # Secrets — ne jamais commit
 .env
 .env.*
+!.env.example
 *.pem
 *.key
 

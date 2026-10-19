@@ -26,6 +26,7 @@ plugins/ia-kit/
 ├── skills/<nom>/SKILL.md         # skills, utilisés automatiquement par Claude
 ├── commands/<nom>.md             # commandes /slash
 ├── agents/<nom>.md               # sous-agents
+├── templates/                    # modèles copiés par /squelette-client et /squelette-server
 └── hooks/hooks.json              # hooks (actions automatiques)
 ```
 

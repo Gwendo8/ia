@@ -27,6 +27,7 @@ Si un besoin du projet semble vraiment mal servi par cette stack, signale-le, ma
    - **Les fonctionnalités** : ce qui est indispensable en première version, ce qui peut attendre
    - **Les données** : ce qu'on manipule, en termes métier (« des clients, des réservations… »), données sensibles éventuelles
    - **Les contraintes** : délai, hébergement (par défaut : gratuit et de qualité), intégrations externes
+   - **L'organisation du code** : front et back dans un seul dépôt (`mono`, par défaut) ou un dépôt chacun (`separe`) ; projet avec seulement un front ou seulement une API ?
    Creuse dès qu'une réponse est floue ou ouvre une nouvelle question.
 3. **Reformule le besoin** en quelques lignes et fais-le valider.
 
@@ -41,7 +42,12 @@ Le plan reste **fonctionnel et organisationnel** : les choix techniques détaill
 
 ## 3. Initialiser le projet
 
-Une fois le plan validé, crée deux fichiers à la racine du projet :
+Une fois le plan validé, pose d'abord le squelette avec les commandes du plugin, en leur passant le nom du projet et l'organisation choisie :
+- `/ia-kit:squelette-server <nom> <mono|separe>` si le projet a une API ;
+- `/ia-kit:squelette-client <nom> <mono|separe>` s'il a un front.
+En `separe`, lance chacune dans le dossier de son propre dépôt. Le squelette ne crée pas la base de données : c'est la première tâche de l'agent `bdd`.
+
+Crée ensuite deux fichiers à la racine du projet :
 
 **`CLAUDE.md`** : court et stable, car il est relu automatiquement à chaque session.
 - Le contexte du projet en quelques lignes

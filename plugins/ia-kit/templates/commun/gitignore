@@ -1,0 +1,21 @@
+# Dépendances
+node_modules/
+
+# Builds
+dist/
+build/
+coverage/
+
+# Secrets : seul .env.example est versionné
+.env
+.env.*
+!.env.example
+
+# Logs et fichiers système
+*.log
+.DS_Store
+
+# Éditeurs
+.vscode/*
+!.vscode/extensions.json
+.idea/
