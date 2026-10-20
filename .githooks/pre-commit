@@ -1,7 +1,8 @@
 #!/bin/sh
 # Avant chaque commit :
 # 1) bloque si un nouvel élément du plugin (commande, agent, skill, hook, MCP) arrive sans mise à jour du README ;
-# 2) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
+# 2) bloque si le bloc « Règles communes » n'est plus identique dans tous les agents ;
+# 3) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
 #    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
 set -e
@@ -25,7 +26,33 @@ if [ -n "$(echo "$NOUVEAUX" | tr -d '[:space:]')" ] && ! git diff --cached --nam
   exit 1
 fi
 
-# 2) Code du MCP pgadmin modifié : on régénère dist/.
+# 2) Un agent modifié : le bloc « Règles communes » doit rester identique dans tous les agents
+#    (un agent ne voit que son propre fichier, d'où les copies). On compare les versions du commit.
+if git diff --cached --name-only | grep -q '^plugins/ia-kit/agents/.*\.md$'; then
+  REF_FILE=""
+  REF_SUM=""
+  DIFFERENTS=""
+  for f in $(git ls-files 'plugins/ia-kit/agents/*.md'); do
+    SUM=$(git show ":$f" | awk '/^## Règles communes/ { on = 1; print; next } on && /^## / { exit } on' | shasum | cut -d' ' -f1)
+    if [ -z "$REF_SUM" ]; then
+      REF_FILE=$f
+      REF_SUM=$SUM
+    elif [ "$SUM" != "$REF_SUM" ]; then
+      DIFFERENTS="$DIFFERENTS
+  - $f"
+    fi
+  done
+  if [ -n "$DIFFERENTS" ]; then
+    echo "pre-commit : commit bloqué, le bloc « Règles communes » n'est plus identique dans tous les agents."
+    echo "Différent de $REF_FILE :$DIFFERENTS"
+    echo "Agents modifiés dans ce commit :"
+    git diff --cached --name-only | grep '^plugins/ia-kit/agents/.*\.md$' | sed 's/^/  - /'
+    echo "Recopie le même bloc dans tous les agents, puis recommite."
+    exit 1
+  fi
+fi
+
+# 3) Code du MCP pgadmin modifié : on régénère dist/.
 if git diff --cached --name-only | grep -v "^$MCP/dist/" | grep -q "^$MCP/"; then
   echo "pre-commit : régénération du MCP pgadmin…"
   cd "$MCP"
