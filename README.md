@@ -35,3 +35,4 @@ plugins/ia-kit/
 - On modifie **uniquement dans ce dépôt**, jamais dans un projet qui utilise le plugin (les fichiers installés sont écrasés à chaque mise à jour).
 - Aucun secret dans le dépôt : utiliser des variables d'environnement (`${MON_TOKEN}`).
 - Tester en local avant de push : `/plugin marketplace add /chemin/vers/ia`.
+- Agents : le bloc « Règles communes » est copié à l'identique en tête de chaque agent (un agent ne voit que son propre fichier). **Le modifier dans tous les agents à la fois.**

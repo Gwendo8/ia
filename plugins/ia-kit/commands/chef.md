@@ -72,8 +72,8 @@ Crée ensuite deux fichiers à la racine du projet :
 
 Règles de délégation :
 - Utilise les agents spécialistes disponibles (`design`, `bdd`, `back`, `front`, `auditeur`…). Si l'un d'eux n'existe pas encore, utilise un agent généraliste en lui décrivant précisément son rôle, et signale à l'utilisateur que ce spécialiste mériterait d'être créé dans ia-kit.
-- Donne à chaque agent un brief autonome : le contexte du projet, sa tâche exacte, les fichiers ou maquettes concernés, les conventions à suivre.
-- Demande à chaque agent de te rendre : ce qu'il a fait, les décisions qu'il a prises, et les pièges rencontrés.
+- Donne à chaque agent un brief autonome : le contexte du projet, sa tâche exacte, les fichiers ou maquettes concernés, les conventions à suivre. Si tu les lances en sous-agents, précise-le dans le brief : ils t'enverront leurs questions. Transmets-les à l'utilisateur **telles quelles**, attends sa réponse, puis renvoie-la **au même agent** (pas un nouveau) pour qu'il continue avec tout son contexte.
+- Demande à chaque agent de te rendre : ce qu'il a fait, les décisions qu'il a prises, les pièges rencontrés et les fichiers créés ou modifiés (pour tenir à jour la carte des fichiers de `PROJET.md`).
 - Lance en parallèle ce qui est indépendant, dans l'ordre ce qui dépend d'autre chose.
 
 ## 5. Coordonner et tenir PROJET.md à jour
