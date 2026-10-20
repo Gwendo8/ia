@@ -67,4 +67,4 @@ Si une vérification échoue, montre l'erreur et corrige avant de continuer. Ne 
 - Ce qui a été créé et où (renvoie au `README.md` du serveur pour l'organisation en couches et les règles).
 - Comment lancer : `npm run dev` → http://localhost:3000/api/health
 - La suite : l'agent `bdd` créera la base et les premières migrations (`npm run db:new -- migration <nom>`).
-- **Ne commite pas** : propose un message de commit et laisse l'utilisateur le faire.
+- **Ne commite pas et ne pousse jamais** (pas de `git push`, pas de dépôt distant ajouté) : propose un message de commit et laisse l'utilisateur le faire.

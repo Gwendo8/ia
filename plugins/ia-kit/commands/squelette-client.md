@@ -63,4 +63,4 @@ Si une vérification échoue, montre l'erreur et corrige avant de continuer. Ne 
 
 - Ce qui a été créé et où (renvoie au `README.md` du client pour l'organisation par domaine et les règles).
 - Comment lancer : `npm run dev` → http://localhost:5173. La page d'accueil affiche « API connectée » si le serveur tourne, « API injoignable » sinon.
-- **Ne commite pas** : propose un message de commit et laisse l'utilisateur le faire.
+- **Ne commite pas et ne pousse jamais** (pas de `git push`, pas de dépôt distant ajouté) : propose un message de commit et laisse l'utilisateur le faire.
