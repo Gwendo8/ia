@@ -64,17 +64,19 @@ Crée ensuite deux fichiers à la racine du projet :
 
 ## 4. Déléguer, dans cet ordre
 
-1. **Design** : maquettes Figma des écrans principaux → validation par l'utilisateur
-2. **BDD** : propose le schéma à partir du besoin fonctionnel → validation par l'utilisateur, puis modèles Sequelize et migrations (peut tourner en parallèle du design)
-3. **Back** : API Node.js à partir du schéma validé
+1. **BDD** : propose le schéma à partir du besoin fonctionnel → validation par l'utilisateur, puis base, migrations et modèles Sequelize
+2. **Design** : recherche d'inspiration, variantes de style, puis maquettes Figma des écrans principaux, à partir des données réelles du schéma → validation par l'utilisateur
+3. **Back** : API Node.js à partir du schéma validé, une fois le design validé
 4. **Front** : React à partir des maquettes validées et de l'API
 5. **Auditeur** : audit de tout le projet (sécurité, qualité du code, cohérence, performances)
+
+Cet ordre est voulu par l'utilisateur : chaque étape commence quand la précédente est validée (le back et le front n'attaquent qu'une fois le design en place).
 
 Règles de délégation :
 - Utilise les agents spécialistes disponibles (`design`, `bdd`, `back`, `front`, `auditeur`…). Si l'un d'eux n'existe pas encore, utilise un agent généraliste en lui décrivant précisément son rôle, et signale à l'utilisateur que ce spécialiste mériterait d'être créé dans ia-kit.
 - Donne à chaque agent un brief autonome : le contexte du projet, sa tâche exacte, les fichiers ou maquettes concernés, les conventions à suivre. Si tu les lances en sous-agents, précise-le dans le brief : ils t'enverront leurs questions. Transmets-les à l'utilisateur **telles quelles**, attends sa réponse, puis renvoie-la **au même agent** (pas un nouveau) pour qu'il continue avec tout son contexte.
 - Demande à chaque agent de te rendre : ce qu'il a fait, les décisions qu'il a prises, les pièges rencontrés et les fichiers créés ou modifiés (pour tenir à jour la carte des fichiers de `PROJET.md`).
-- Lance en parallèle ce qui est indépendant, dans l'ordre ce qui dépend d'autre chose.
+- Respecte l'ordre des étapes ci-dessus ; à l'intérieur d'une étape seulement, lance en parallèle ce qui est indépendant.
 
 ## 5. Coordonner et tenir PROJET.md à jour
 
