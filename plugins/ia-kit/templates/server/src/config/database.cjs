@@ -1,8 +1,9 @@
 // Config lue par sequelize-cli (migrations, seeders). Ancienne syntaxe imposée par l'outil.
+// NODE_ENV=test (npm run db:migrate:test) : on vise la base de test via .env.test.
 try {
-  process.loadEnvFile();
+  process.loadEnvFile(process.env.NODE_ENV === 'test' ? '.env.test' : '.env');
 } catch {
-  // Pas de .env : on garde les variables déjà définies
+  // Pas de fichier : on garde les variables déjà définies
 }
 
 const config = {

@@ -10,6 +10,7 @@
     "test:watch": "vitest",
     "db:migrate": "sequelize-cli db:migrate",
     "db:migrate:undo": "sequelize-cli db:migrate:undo",
+    "db:migrate:test": "NODE_ENV=test sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
     "db:new": "node scripts/db-new.js"
   },

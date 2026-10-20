@@ -50,8 +50,9 @@ Puis, selon l'organisation :
 2. **mono** : `npm install` à la racine, puis dans `server/`. **separe** : `npm install` à la racine.
    Les versions du modèle bloquent la version majeure (`^5.0.0`) : npm installe la dernière version compatible.
 3. Crée le `.env` à partir de `.env.example`, en remplaçant `utilisateur` dans `DATABASE_URL` par le résultat de `whoami`. Si PostgreSQL demande un mot de passe, signale à l'utilisateur qu'il devra l'ajouter dans `.env` (jamais ailleurs).
+   Crée de même le `.env.test` à partir de `.env.test.example` (même remplacement) : c'est la base séparée utilisée par les tests.
 
-**Ne crée pas la base de données** et n'écris aucune migration : c'est le travail de l'agent `bdd`. Le squelette prépare seulement le branchement.
+**Ne crée pas les bases de données** (ni la principale ni celle de test) et n'écris aucune migration : c'est le travail de l'agent `bdd`. Le squelette prépare seulement le branchement.
 
 ## 6. Vérifier que tout marche
 

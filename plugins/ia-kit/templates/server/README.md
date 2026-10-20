@@ -10,17 +10,24 @@ npm install
 npm run dev            # http://localhost:3000/api/health
 ```
 
+Les tests (`npm test`) utilisent une base séparée, configurée dans `.env.test` (copie de `.env.test.example`), dont le nom finit par `_test`.
+
+```bash
+cp .env.test.example .env.test
+```
+
 ## Scripts
 
-| Script                                     | Rôle                                       |
-| ------------------------------------------ | ------------------------------------------ |
-| `npm run dev`                              | Serveur avec redémarrage automatique       |
-| `npm test`                                 | Tests (Vitest + Supertest)                 |
-| `npm run lint`                             | Vérifie le code (ESLint)                   |
-| `npm run db:migrate`                       | Applique les migrations                    |
-| `npm run db:migrate:undo`                  | Annule la dernière migration               |
-| `npm run db:seed`                          | Insère les données de départ               |
-| `npm run db:new -- migration create-users` | Crée une migration (`seed` pour un seeder) |
+| Script                                     | Rôle                                        |
+| ------------------------------------------ | ------------------------------------------- |
+| `npm run dev`                              | Serveur avec redémarrage automatique        |
+| `npm test`                                 | Tests (Vitest + Supertest)                  |
+| `npm run lint`                             | Vérifie le code (ESLint)                    |
+| `npm run db:migrate`                       | Applique les migrations                     |
+| `npm run db:migrate:undo`                  | Annule la dernière migration                |
+| `npm run db:migrate:test`                  | Applique les migrations sur la base de test |
+| `npm run db:seed`                          | Insère les données de départ                |
+| `npm run db:new -- migration create-users` | Crée une migration (`seed` pour un seeder)  |
 
 ## Organisation (`src/`)
 
@@ -50,3 +57,4 @@ routes → middlewares (validate) → controllers → services → repositories 
   Toujours les créer avec `npm run db:new`, jamais avec `sequelize-cli migration:generate` (qui produit du `.js`).
 - Les erreurs se lancent avec `throw new HttpError(status, message)` : le middleware `errorHandler` répond en JSON.
 - Les données entrantes sont toujours vérifiées avec `validate({ body, query, params })` et des schémas Zod.
+- Les tests tournent sur la base de test (`.env.test`, nom en `_test`), jamais sur la vraie base. Après une nouvelle migration : `npm run db:migrate:test`.
