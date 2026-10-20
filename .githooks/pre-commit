@@ -1,11 +1,31 @@
 #!/bin/sh
-# Avant chaque commit : si le code du MCP pgadmin a changé, on régénère son fichier regroupé (dist/)
-# et on l'ajoute au commit. Ainsi, les postes qui installent le plugin reçoivent toujours la bonne version.
+# Avant chaque commit :
+# 1) bloque si un nouvel élément du plugin (commande, agent, skill, hook, MCP) arrive sans mise à jour du README ;
+# 2) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
+#    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
 set -e
 
 MCP=plugins/ia-kit/mcp/pgadmin
 
+# 1) Nouvel élément du plugin (commande, agent, skill, hook, MCP) sans mise à jour du README : on bloque.
+#    Le README contient le tableau « Contenu du plugin », qui doit lister tous les éléments.
+NOUVEAUX=$(git diff --cached --name-only --diff-filter=A \
+  | grep -E '^plugins/ia-kit/(commands/[^/]+\.md|agents/[^/]+\.md|skills/[^/]+/SKILL\.md|hooks/hooks\.json|mcp/[^/]+/package\.json)$' || true)
+if git diff --cached --name-only | grep -qx 'plugins/ia-kit/.mcp.json'; then
+  NOUVEAUX="$NOUVEAUX
+plugins/ia-kit/.mcp.json (MCP ajouté ou modifié ?)"
+fi
+if [ -n "$(echo "$NOUVEAUX" | tr -d '[:space:]')" ] && ! git diff --cached --name-only | grep -qx 'README.md'; then
+  echo "pre-commit : commit bloqué, le README n'est pas à jour."
+  echo "Ces éléments du plugin sont nouveaux :"
+  echo "$NOUVEAUX" | sed '/^$/d; s/^/  - /'
+  echo "Ajoute-les au tableau « Contenu du plugin » du README.md, puis recommite."
+  echo "(Si c'est voulu : git commit --no-verify)"
+  exit 1
+fi
+
+# 2) Code du MCP pgadmin modifié : on régénère dist/.
 if git diff --cached --name-only | grep -v "^$MCP/dist/" | grep -q "^$MCP/"; then
   echo "pre-commit : régénération du MCP pgadmin…"
   cd "$MCP"

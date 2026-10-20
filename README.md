@@ -32,9 +32,12 @@ claude plugin marketplace update gwendo8
 | `/squelette-server` | commande | Crée le squelette du serveur (Node.js + Express + Sequelize). Mêmes arguments. |
 | `/bdd` | commande | Lance le spécialiste base de données directement dans la conversation. |
 | `/back` | commande | Lance le spécialiste API directement dans la conversation. |
+| `/design` | commande | Lance le designer directement dans la conversation. |
 | `bdd` | agent | Conçoit le schéma avec toi, puis crée la base, les migrations et les modèles (PostgreSQL + Sequelize). |
 | `back` | agent | Définit le contrat de l'API avec toi, puis code les routes, la logique et les tests. |
+| `design` | agent | Recherche l'inspiration ciblée sur le projet, te propose trois variantes, puis écrit `DESIGN.md` et les maquettes Figma. Gère aussi les refontes. |
 | `pgadmin` | MCP | Lit les bases PostgreSQL à partir des serveurs de pgAdmin (voir ci-dessous). |
+| `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : l'agent `design` s'en sert pour regarder les sites d'inspiration en capture d'écran. |
 | Hooks | — | Aucun pour l'instant. |
 | Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
 
@@ -51,18 +54,14 @@ claude plugin marketplace update gwendo8
 
 L'agent `design` utilise ces skills s'ils sont installés, et fait sans sinon. Ils s'installent sur la machine, pas sur le compte : à refaire sur chaque poste.
 
-Dans Claude Code, lancé depuis le terminal (choisir la portée **user**) :
-
-```
-/plugin marketplace add anthropics/claude-code
-/plugin install frontend-design@claude-code-plugins
-/plugin marketplace add pbakaus/impeccable
-/plugin install impeccable@impeccable
-```
-
-Dans le terminal (skill de Vercel, un seul fichier qui télécharge ses règles à jour à chaque usage) :
+Dans un terminal :
 
 ```bash
+claude plugin marketplace add anthropics/claude-code
+claude plugin install frontend-design@claude-code-plugins
+claude plugin marketplace add pbakaus/impeccable
+claude plugin install impeccable@impeccable
+# Skill de Vercel : un seul fichier, qui télécharge ses règles à jour à chaque usage
 mkdir -p ~/.claude/skills/web-design-guidelines && curl -fsSL https://raw.githubusercontent.com/vercel-labs/agent-skills/main/skills/web-design-guidelines/SKILL.md -o ~/.claude/skills/web-design-guidelines/SKILL.md
 ```
 
