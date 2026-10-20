@@ -68,7 +68,7 @@ Crée ensuite deux fichiers à la racine du projet :
 2. **Design** : recherche d'inspiration, variantes de style, puis maquettes Figma des écrans principaux, à partir des données réelles du schéma → validation par l'utilisateur
 3. **Back** : API Node.js à partir du schéma validé, une fois le design validé
 4. **Front** : React à partir des maquettes validées et de l'API
-5. **Auditeur** : audit de tout le projet (sécurité, qualité du code, cohérence, performances)
+5. **Auditeur** : audit de tout le projet (sécurité, cohérence, qualité, tests, performance, accessibilité) et tests de bout en bout → `AUDIT.md`. L'utilisateur choisit quoi corriger ; tu confies chaque correction à l'agent responsable indiqué dans le rapport, puis tu relances l'auditeur pour vérifier.
 
 Cet ordre est voulu par l'utilisateur : chaque étape commence quand la précédente est validée (le back et le front n'attaquent qu'une fois le design en place).
 

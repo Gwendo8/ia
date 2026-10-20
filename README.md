@@ -34,12 +34,14 @@ claude plugin marketplace update gwendo8
 | `/back` | commande | Lance le spécialiste API directement dans la conversation. |
 | `/design` | commande | Lance le designer directement dans la conversation. |
 | `/front` | commande | Lance le spécialiste front-end directement dans la conversation. |
+| `/auditeur` | commande | Lance un audit complet ou ciblé directement dans la conversation. |
 | `bdd` | agent | Conçoit le schéma avec toi, puis crée la base, les migrations et les modèles (PostgreSQL + Sequelize). |
 | `back` | agent | Définit le contrat de l'API avec toi, puis code les routes, la logique et les tests. |
 | `design` | agent | Recherche l'inspiration ciblée sur le projet, te propose trois variantes, puis écrit `DESIGN.md` et les maquettes Figma. Gère aussi les refontes. |
 | `front` | agent | Présente son plan avec toi, puis code les écrans React d'après `DESIGN.md`, les maquettes Figma et `API.md`, avec tests et vérification visuelle. |
+| `auditeur` | agent | Passe le projet en revue (sécurité, cohérence, qualité, tests, performance, accessibilité), écrit `AUDIT.md` et les tests de bout en bout. Ne corrige pas : indique quel agent doit corriger. |
 | `pgadmin` | MCP | Lit les bases PostgreSQL à partir des serveurs de pgAdmin (voir ci-dessous). |
-| `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : les agents `design` et `front` s'en servent pour regarder des pages en capture d'écran (inspiration, vérification des écrans). |
+| `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : les agents `design`, `front` et `auditeur` s'en servent pour regarder des pages en capture d'écran (inspiration, vérification des écrans). |
 | Hooks | — | Aucun pour l'instant. |
 | Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
 

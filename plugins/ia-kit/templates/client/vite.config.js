@@ -5,8 +5,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    // En développement, les appels à /api partent vers le serveur Express local
-    proxy: { '/api': 'http://localhost:3000' },
+    // En développement, les appels à /api partent vers le serveur Express local.
+    // API_PROXY_TARGET permet de viser un autre serveur (ex. celui des tests de bout en bout, branché sur la base de test).
+    proxy: { '/api': process.env.API_PROXY_TARGET ?? 'http://localhost:3000' },
   },
   test: {
     environment: 'jsdom',

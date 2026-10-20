@@ -14,6 +14,11 @@ export default [
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  // Fichiers de configuration : exécutés par Node, pas dans le navigateur
+  {
+    files: ['vite.config.js'],
+    languageOptions: { globals: globals.node },
+  },
   reactHooks.configs.flat.recommended,
   reactRefresh.configs.vite,
   // Désactive les règles de mise en forme : c'est le rôle de Prettier
