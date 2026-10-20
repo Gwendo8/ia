@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pgadmin": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/pgadmin/dist/pgadmin-mcp.js"]
+    }
+  }
+}

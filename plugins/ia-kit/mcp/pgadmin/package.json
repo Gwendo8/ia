@@ -1,0 +1,23 @@
+{
+  "name": "pgadmin-mcp",
+  "version": "0.1.0",
+  "description": "MCP qui s'appuie sur la liste des serveurs de pgAdmin pour lire les bases PostgreSQL (lecture seule)",
+  "type": "module",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "pg": "^8.23.1",
+    "pgpass": "^1.0.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "build": "esbuild index.js --bundle --platform=node --format=esm --target=node22 --external:pg-native --outfile=dist/pgadmin-mcp.js --banner:js=\"import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);\""
+  }
+}

@@ -1,0 +1,16 @@
+#!/bin/sh
+# Avant chaque commit : si le code du MCP pgadmin a changé, on régénère son fichier regroupé (dist/)
+# et on l'ajoute au commit. Ainsi, les postes qui installent le plugin reçoivent toujours la bonne version.
+# Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
+set -e
+
+MCP=plugins/ia-kit/mcp/pgadmin
+
+if git diff --cached --name-only | grep -v "^$MCP/dist/" | grep -q "^$MCP/"; then
+  echo "pre-commit : régénération du MCP pgadmin…"
+  cd "$MCP"
+  [ -d node_modules ] || npm ci --silent
+  npm run build --silent
+  cd - > /dev/null
+  git add "$MCP/dist/pgadmin-mcp.js"
+fi
