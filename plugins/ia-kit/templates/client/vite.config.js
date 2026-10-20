@@ -11,5 +11,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.js'],
+    // npm run test:coverage : quelles lignes de src/ les tests parcourent, et lesquelles jamais
+    coverage: { include: ['src/**'], exclude: ['src/test/**', 'src/main.jsx'] },
   },
 });

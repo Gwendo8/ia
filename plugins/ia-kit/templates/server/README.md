@@ -11,6 +11,7 @@ npm run dev            # http://localhost:3000/api/health
 ```
 
 Les tests (`npm test`) utilisent une base séparée, configurée dans `.env.test` (copie de `.env.test.example`), dont le nom finit par `_test`.
+| `npm run test:coverage` | Tests + rapport de couverture (lignes jamais testées) |
 
 ```bash
 cp .env.test.example .env.test

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { expectNoA11yViolations } from '../../test/axe.js';
 import HomePage from './HomePage.jsx';
 
 describe('HomePage', () => {
@@ -21,5 +22,14 @@ describe('HomePage', () => {
     render(<HomePage />);
 
     expect(await screen.findByText('API injoignable')).toBeInTheDocument();
+  });
+
+  it('est accessible', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ status: 'ok' })));
+
+    const { container } = render(<HomePage />);
+    await screen.findByText('API connectée');
+
+    await expectNoA11yViolations(container);
   });
 });

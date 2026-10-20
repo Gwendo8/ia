@@ -33,11 +33,13 @@ claude plugin marketplace update gwendo8
 | `/bdd` | commande | Lance le spécialiste base de données directement dans la conversation. |
 | `/back` | commande | Lance le spécialiste API directement dans la conversation. |
 | `/design` | commande | Lance le designer directement dans la conversation. |
+| `/front` | commande | Lance le spécialiste front-end directement dans la conversation. |
 | `bdd` | agent | Conçoit le schéma avec toi, puis crée la base, les migrations et les modèles (PostgreSQL + Sequelize). |
 | `back` | agent | Définit le contrat de l'API avec toi, puis code les routes, la logique et les tests. |
 | `design` | agent | Recherche l'inspiration ciblée sur le projet, te propose trois variantes, puis écrit `DESIGN.md` et les maquettes Figma. Gère aussi les refontes. |
+| `front` | agent | Présente son plan avec toi, puis code les écrans React d'après `DESIGN.md`, les maquettes Figma et `API.md`, avec tests et vérification visuelle. |
 | `pgadmin` | MCP | Lit les bases PostgreSQL à partir des serveurs de pgAdmin (voir ci-dessous). |
-| `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : l'agent `design` s'en sert pour regarder les sites d'inspiration en capture d'écran. |
+| `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : les agents `design` et `front` s'en servent pour regarder des pages en capture d'écran (inspiration, vérification des écrans). |
 | Hooks | — | Aucun pour l'instant. |
 | Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
 
@@ -52,7 +54,7 @@ claude plugin marketplace update gwendo8
 
 ## Compléments à installer (une fois par ordinateur)
 
-L'agent `design` utilise ces skills s'ils sont installés, et fait sans sinon. Ils s'installent sur la machine, pas sur le compte : à refaire sur chaque poste.
+Les agents `design` (frontend-design) et `front` (Impeccable, Vercel) utilisent ces skills s'ils sont installés, et font sans sinon. Ils s'installent sur la machine, pas sur le compte : à refaire sur chaque poste.
 
 Dans un terminal :
 

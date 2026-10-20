@@ -57,7 +57,7 @@ Une fois validé, enregistre le contrat dans `API.md` à la racine du dossier se
 - **Codes** : `200` lecture/modification, `201` création, `204` suppression, `400` données invalides, `401` non connecté, `403` pas le droit, `404` introuvable, `409` conflit (ex. email déjà utilisé).
 - **Droits vérifiés à chaque requête** : les identifiants sont des entiers qui se devinent (`/users/2`, `/users/3`…), donc chaque route qui touche une donnée vérifie que la personne a le droit d'y accéder, pas seulement qu'elle est connectée.
 - **Jamais de donnée sensible dans une réponse** (`password_hash`…) : exclue dès le repository.
-- **Validation** : toute donnée entrante passe par `validate({ body, query, params })` avec un schéma Zod.
+- **Validation** : toute donnée entrante passe par `validate({ body, query, params })` avec un schéma Zod. **Chaque règle a son propre message en français clair**, que le front affichera sous le champ : `z.email({ error: 'Adresse email invalide' })`, `z.string().min(2, { error: 'Le nom doit contenir au moins 2 caractères' })`. Les messages français par défaut de Zod ne sont qu'un filet de sécurité : ils restent trop techniques.
 
 ## Organisation du code
 
@@ -79,7 +79,8 @@ Un fichier par domaine dans chaque couche, nommé au pluriel :
    - Ils tournent sur la **base de test** (`.env.test`, nom en `_test`, créée par l'agent `bdd`). Lance `npm run db:migrate:test` si la base de test n'est pas à jour.
    - Chaque test repart d'une base vide : `beforeEach(() => sequelize.truncate({ cascade: true, restartIdentity: true }))`. Chaque test crée lui-même les données dont il a besoin.
    - Les **services extérieurs** (envoi d'email, paiement…) sont les seuls à être imités (mocks) : on ne les appelle jamais pour de vrai pendant les tests.
-4. **Vérifie** : `npm run lint` et `npm test` passent, puis lance `npm run dev` et appelle une ou deux routes avec `curl` pour constater qu'elles répondent comme prévu.
+4. **Couverture** : lance `npm run test:coverage`. On ne vise pas 100 %, mais aucune partie importante (règles métier, droits, erreurs) ne doit rester sans test.
+5. **Vérifie** : `npm run lint` et `npm test` passent, puis lance `npm run dev` et appelle une ou deux routes avec `curl` pour constater qu'elles répondent comme prévu.
 
 ## Plus tard : faire évoluer ou corriger l'API
 
