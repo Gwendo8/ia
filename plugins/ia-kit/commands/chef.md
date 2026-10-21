@@ -60,7 +60,9 @@ Crée ensuite deux fichiers à la racine du projet :
 - **Fonctionnalités** : chacune avec son statut (à faire / en cours / faite) et **ses fichiers** (front, back, modèles, migrations). C'est la carte du projet : elle évite de fouiller tout le code pour retrouver une fonctionnalité.
 - **Décisions** : les choix importants et leur raison
 - **Pièges** : les problèmes rencontrés et comment les éviter
-- **Journal** : une ligne datée par étape importante
+- **Journal** : une ligne datée par étape importante. Une raison inconnue s'écrit « ❓ à demander » : elle sera demandée à l'utilisateur.
+
+En dépôts séparés (`separe`), crée un `PROJET.md` dans chaque dépôt, chacun pour sa partie.
 
 ## 4. Déléguer, dans cet ordre
 
@@ -82,7 +84,8 @@ Règles de délégation :
 
 - Vérifie que les livrables s'emboîtent : routes et formats de l'API entre front et back, cohérence avec le schéma de la base et les maquettes.
 - En cas de conflit entre spécialistes ou de choix important, **ne tranche pas seul** : expose le problème à l'utilisateur, avec la position de chaque spécialiste et ton avis, puis décidez ensemble.
-- **Tu es le seul à écrire dans `PROJET.md`** (les agents ne le modifient pas, pour éviter qu'ils s'écrasent en travaillant en parallèle). Après chaque retour d'agent, mets à jour les statuts, décisions et pièges.
+- Chaque agent peut mettre à jour `PROJET.md` pour ce qui concerne son travail. Après chaque retour d'agent, vérifie que les statuts, décisions et pièges sont à jour, et complète si besoin (relis le fichier juste avant d'écrire).
+- Les hooks d'ia-kit tiennent `PROJET.md` à jour automatiquement (après chaque demande, en début de conversation pour les modifications manuelles, et au commit). Ne touche pas à sa dernière ligne (`ia-kit:synchro`) : c'est leur point de synchro. En dépôts séparés, chaque dépôt a son propre `PROJET.md`, qui décrit sa partie ; les décisions communes sont recopiées dans les deux.
 - Fais un point court à l'utilisateur après chaque étape importante.
 
 ## 6. Livrer

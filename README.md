@@ -42,7 +42,7 @@ claude plugin marketplace update gwendo8
 | `auditeur` | agent | Passe le projet en revue (sécurité, cohérence, qualité, tests, performance, accessibilité), écrit `AUDIT.md` et les tests de bout en bout. Ne corrige pas : indique quel agent doit corriger. |
 | `pgadmin` | MCP | Lit les bases PostgreSQL à partir des serveurs de pgAdmin (voir ci-dessous). |
 | `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : les agents `design`, `front` et `auditeur` s'en servent pour regarder des pages en capture d'écran (inspiration, vérification des écrans). |
-| Hooks | — | Aucun pour l'instant. |
+| `projet-sync` | hooks | Gardent `PROJET.md` à jour tout seuls : en début de conversation (rattrape tes modifications manuelles), à la fin de chaque demande qui a modifié le projet, et à chaque commit (Claude met `PROJET.md` à jour et l'ajoute au même commit). Ne font rien dans un projet sans `PROJET.md`. Script : `templates/commun/.husky/projet-sync.sh` (copié dans chaque projet par les squelettes). |
 | Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
@@ -53,6 +53,16 @@ claude plugin marketplace update gwendo8
 - Les mots de passe viennent du fichier standard de PostgreSQL : `~/.pgpass` (Mac) ou `%APPDATA%\postgresql\pgpass.conf` (Windows). En local, souvent inutile.
 - **Lecture seule partout**, sauf sur une base de test : nom en `_test` **et** serveur local.
 - Si pgAdmin est rangé ailleurs que d'habitude, indiquer le chemin de `pgadmin4.db` dans la variable d'environnement `PGADMIN_DB`.
+
+**Les hooks projet-sync** gardent `PROJET.md` (la carte du projet) à jour, même après tes modifications à la main.
+
+- **Point de synchro** : la dernière ligne de `PROJET.md` est un commentaire invisible qui contient une empreinte git de tous les fichiers au moment de la dernière mise à jour. Le script compare le projet à cette empreinte pour savoir ce qui a changé, que ce soit commité ou non. Ne pas modifier cette ligne.
+- **Début de conversation** : s'il y a eu des changements depuis, Claude en reçoit la liste et met `PROJET.md` à jour. Il demande le pourquoi d'une modification manuelle au lieu de l'inventer, et pose aussi les questions laissées en attente (« ❓ à demander »).
+- **Fin de chaque demande** : si du code a changé sans que `PROJET.md` suive, Claude est relancé **une seule fois** pour le mettre à jour. Si rien n'a changé, rien ne se passe (aucun coût).
+- **Commit** (pre-commit Husky du projet) : si `PROJET.md` n'a pas suivi, le script lance `claude -p`, qui le met à jour (une quinzaine de secondes), puis l'ajoute au même commit. Une raison inconnue devient « ❓ à demander ». Si Claude est indisponible, le commit est bloqué (contournement : `git commit --no-verify`).
+- **Tout le monde peut écrire `PROJET.md`** (chef, agents, toi) : on relit juste avant d'écrire et on ne touche qu'à ce qui concerne son travail. En dépôts séparés, chaque dépôt a son propre `PROJET.md`.
+- Ignorés : `PROJET.md` lui-même, les fichiers de verrouillage et tout ce que `.gitignore` exclut (`node_modules`, `dist`, `.env`…). Le `claude -p` du commit tourne avec `IA_KIT_SYNC_OFF=1`, pour ne pas redéclencher les hooks en boucle.
+- **Projet créé avant ces hooks** : les hooks de conversation marchent déjà. Pour le commit, copier `templates/commun/.husky/projet-sync.sh` dans le `.husky/` du projet et ajouter la ligne `sh .husky/projet-sync.sh commit` à `.husky/pre-commit`.
 
 ## Compléments à installer (une fois par ordinateur)
 
@@ -79,6 +89,7 @@ plugins/ia-kit/
 ├── commands/<nom>.md             # commandes /slash
 ├── agents/<nom>.md               # sous-agents
 ├── templates/                    # modèles copiés par /squelette-client et /squelette-server
+│                                 #   (commun/.husky/projet-sync.sh = script des hooks projet-sync)
 ├── .mcp.json                     # déclare les serveurs MCP du plugin
 ├── mcp/pgadmin/                  # code du MCP pgadmin (dist/ = version compilée, commitée)
 └── hooks/hooks.json              # hooks (actions automatiques)
@@ -92,6 +103,7 @@ plugins/ia-kit/
   git config core.hooksPath .githooks
   ```
 
+  (Ce sont les hooks git **de ce dépôt**, pour développer le plugin ; à ne pas confondre avec les hooks projet-sync, qui tournent dans tes projets.)
   Le hook `pre-commit` fait alors trois choses avant chaque commit :
   - il **bloque** le commit si un nouvel élément du plugin (commande, agent, skill, hook, MCP) n'a pas été ajouté au README ;
   - il **bloque** le commit si le bloc « Règles communes » n'est plus identique dans tous les agents ;

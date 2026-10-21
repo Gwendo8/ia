@@ -1,0 +1,27 @@
+{
+  "description": "Garde PROJET.md à jour : rattrape les modifications manuelles en début de conversation, et fait suivre PROJET.md après chaque demande qui a modifié le projet.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/templates/commun/.husky/projet-sync.sh\" debut",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/templates/commun/.husky/projet-sync.sh\" fin",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
