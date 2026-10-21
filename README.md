@@ -20,7 +20,8 @@ Prérequis : **Node.js 22.13 ou plus** (le MCP pgadmin en a besoin) et, pour ce 
 Mettre à jour après un push, puis relancer Claude Code :
 
 ```bash
-claude plugin marketplace update gwendo8
+claude plugin marketplace update gwendo8   # récupère le catalogue à jour depuis GitHub
+claude plugin update ia-kit@gwendo8        # installe la nouvelle version du plugin
 ```
 
 ### Contenu du plugin
