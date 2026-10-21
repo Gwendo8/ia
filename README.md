@@ -23,7 +23,7 @@ claude plugin install ia-kit@gwendo8
 | `project` (`--scope project`) | Ce projet seulement | Toi et quiconque récupère le projet (noté dans `.claude/settings.json`, versionné) |
 | `local` (`--scope local`) | Ce projet seulement | Toi seule, sans partage |
 
-Pour démarrer un nouveau projet : ouvre un terminal dans son dossier, lance `claude`, puis `/ia-kit:chef`.
+Pour démarrer un nouveau projet : ouvre un terminal dans son dossier, lance `claude`, puis `/ia-kit:chef`. Si l'idée est encore floue, commence par `/ia-kit:cahier-des-charges <ton idée>` : il en discute avec toi et écrit `CAHIER-DES-CHARGES.md`, que tu donnes ensuite au chef (`/ia-kit:chef CAHIER-DES-CHARGES.md`).
 
 Prérequis : **Node.js 22.13 ou plus** (le MCP pgadmin en a besoin) et, pour ce MCP, **pgAdmin** installé avec ses serveurs enregistrés.
 
@@ -40,6 +40,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 
 | Élément | Type | À quoi ça sert |
 | --- | --- | --- |
+| `/cahier-des-charges` | commande | Part de ton idée de projet, te pose des questions thème par thème, puis rédige `CAHIER-DES-CHARGES.md` (à donner ensuite à `/chef`). Ne fait aucun choix technique. |
 | `/chef` | commande | Chef de projet : cadre un nouveau projet, découpe le travail et dirige les agents spécialistes. |
 | `/squelette-client` | commande | Crée le squelette du client (React + Vite + Tailwind). Arguments : `[nom-du-projet] [mono\|separe]`. |
 | `/squelette-server` | commande | Crée le squelette du serveur (Node.js + Express + Sequelize). Mêmes arguments. |

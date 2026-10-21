@@ -20,7 +20,8 @@ Si un besoin du projet semble vraiment mal servi par cette stack, signale-le, ma
 
 ## 1. Cadrer
 
-1. **Demande explicitement si un cahier des charges existe**, ainsi que tout autre document utile : notes, sites d'exemple, base existante. Lis tout ce qui est fourni (fichier, lien…). Les maquettes, elles, seront produites plus tard par l'agent `design`.
+1. **Demande explicitement si un cahier des charges existe**, ainsi que tout autre document utile : notes, sites d'exemple, base existante. Lis tout ce qui est fourni (fichier, lien…), y compris un `CAHIER-DES-CHARGES.md` présent dans le dossier. Les maquettes, elles, seront produites plus tard par l'agent `design`.
+   S'il n'y a pas de cahier des charges et que l'idée est encore floue, propose d'abord `/ia-kit:cahier-des-charges <idée>`, qui le construit avec l'utilisateur ; sinon, continue le cadrage ici. Avec un cahier des charges, ne repose pas les questions auxquelles il répond déjà : creuse seulement ce qui manque et ses questions ouvertes.
 2. **Pose ensuite toutes les questions nécessaires**, sans limite de nombre, sur ce que les documents ne couvrent pas. Procède **thème par thème** et attends les réponses avant de passer au thème suivant :
    - **Le besoin** : quel problème le projet résout, pourquoi maintenant
    - **Les utilisateurs** : qui utilise l'application, avec quels rôles et quels droits
