@@ -15,6 +15,16 @@ claude plugin install ia-kit@gwendo8
 
 > ⚠️ `/plugin` ne marche pas dans l'extension VS Code : toujours passer par `claude plugin ...` dans un terminal.
 
+**Où le plugin est actif (la « portée »)** : par défaut, il s'installe pour **tous tes projets** de l'ordinateur (portée `user`), sans rien à refaire projet par projet. Les commandes ne se lancent que si tu les tapes, et les hooks ne font rien sans `PROJET.md` : il ne gêne donc pas les autres projets. Deux autres portées existent, à installer depuis le dossier du projet :
+
+| Portée | Où il est actif | Pour qui |
+| --- | --- | --- |
+| `user` (par défaut) | Tous tes projets | Toi seule |
+| `project` (`--scope project`) | Ce projet seulement | Toi et quiconque récupère le projet (noté dans `.claude/settings.json`, versionné) |
+| `local` (`--scope local`) | Ce projet seulement | Toi seule, sans partage |
+
+Pour démarrer un nouveau projet : ouvre un terminal dans son dossier, lance `claude`, puis `/ia-kit:chef`.
+
 Prérequis : **Node.js 22.13 ou plus** (le MCP pgadmin en a besoin) et, pour ce MCP, **pgAdmin** installé avec ses serveurs enregistrés.
 
 Mettre à jour après un push, puis relancer Claude Code :
