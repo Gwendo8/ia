@@ -34,6 +34,8 @@ claude plugin marketplace update gwendo8   # récupère le catalogue à jour dep
 claude plugin update ia-kit@gwendo8        # installe la nouvelle version du plugin
 ```
 
+Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`claude plugin marketplace add /chemin/vers/ia`) : le plugin y est lu directement dans le dossier, relancer Claude Code suffit (`claude plugin marketplace list` montre la source : « Folder » ou GitHub). Attention, sur ce poste, une modification en cours dans `ia` s'applique à tous tes projets dès la relance, même sans commit.
+
 ### Contenu du plugin
 
 | Élément | Type | À quoi ça sert |
