@@ -105,9 +105,11 @@ plugins/ia-kit/
 
   (Ce sont les hooks git **de ce dépôt**, pour développer le plugin ; à ne pas confondre avec les hooks projet-sync, qui tournent dans tes projets.)
   Le hook `pre-commit` fait alors trois choses avant chaque commit :
-  - il **bloque** le commit si un nouvel élément du plugin (commande, agent, skill, hook, MCP) n'a pas été ajouté au README ;
+  - il **bloque** le commit si le tableau « Contenu du plugin » ne correspond plus au plugin, dans les deux sens : élément (commande, agent, skill, MCP, hooks) sans sa ligne, ou ligne d'un élément supprimé (script `.githooks/verifier-readme.js`) ;
   - il **bloque** le commit si le bloc « Règles communes » n'est plus identique dans tous les agents ;
   - si le code du MCP pgadmin a changé, il **relance la compilation** (`npm run build`) et ajoute `dist/` au commit.
+
+- **Hook Claude de ce dépôt** (`.claude/settings.json`, actif tout seul quand Claude travaille ici) : à la fin d'une demande où Claude a modifié des fichiers du plugin sans toucher au README, il est relancé une fois pour vérifier que le README décrit toujours la réalité (descriptions, structure, explications). Le pre-commit ne vérifie que le tableau ; ce hook s'occupe du sens. Il ne couvre pas tes modifications manuelles.
 
 - **Pourquoi compiler le MCP** : le plugin installé ne fait pas de `npm install`. Il lance directement `dist/pgadmin-mcp.js`, un fichier unique qui contient le code et toutes ses dépendances. C'est ce fichier qui est commité : s'il n'est pas recompilé, la modification n'arrive jamais chez l'utilisateur. Sans le hook, compiler à la main : `cd plugins/ia-kit/mcp/pgadmin && npm run build`.
 

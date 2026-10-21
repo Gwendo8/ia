@@ -1,6 +1,6 @@
 #!/bin/sh
 # Avant chaque commit :
-# 1) bloque si un nouvel élément du plugin (commande, agent, skill, hook, MCP) arrive sans mise à jour du README ;
+# 1) bloque si le tableau « Contenu du plugin » du README ne correspond plus aux éléments du plugin ;
 # 2) bloque si le bloc « Règles communes » n'est plus identique dans tous les agents ;
 # 3) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
 #    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
@@ -9,22 +9,9 @@ set -e
 
 MCP=plugins/ia-kit/mcp/pgadmin
 
-# 1) Nouvel élément du plugin (commande, agent, skill, hook, MCP) sans mise à jour du README : on bloque.
-#    Le README contient le tableau « Contenu du plugin », qui doit lister tous les éléments.
-NOUVEAUX=$(git diff --cached --name-only --diff-filter=A \
-  | grep -E '^plugins/ia-kit/(commands/[^/]+\.md|agents/[^/]+\.md|skills/[^/]+/SKILL\.md|hooks/hooks\.json|mcp/[^/]+/package\.json)$' || true)
-if git diff --cached --name-only | grep -qx 'plugins/ia-kit/.mcp.json'; then
-  NOUVEAUX="$NOUVEAUX
-plugins/ia-kit/.mcp.json (MCP ajouté ou modifié ?)"
-fi
-if [ -n "$(echo "$NOUVEAUX" | tr -d '[:space:]')" ] && ! git diff --cached --name-only | grep -qx 'README.md'; then
-  echo "pre-commit : commit bloqué, le README n'est pas à jour."
-  echo "Ces éléments du plugin sont nouveaux :"
-  echo "$NOUVEAUX" | sed '/^$/d; s/^/  - /'
-  echo "Ajoute-les au tableau « Contenu du plugin » du README.md, puis recommite."
-  echo "(Si c'est voulu : git commit --no-verify)"
-  exit 1
-fi
+# 1) Le tableau « Contenu du plugin » du README doit correspondre au plugin, dans les deux sens
+#    (élément ajouté sans sa ligne, ou ligne d'un élément supprimé) : on bloque.
+node .githooks/verifier-readme.js
 
 # 2) Un agent modifié : le bloc « Règles communes » doit rester identique dans tous les agents
 #    (un agent ne voit que son propre fichier, d'où les copies). On compare les versions du commit.
