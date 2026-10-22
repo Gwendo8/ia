@@ -35,7 +35,7 @@ grep -rl __NOM_PROJET__ <destination> | xargs perl -pi -e 's/__NOM_PROJET__/<nom
 
 Copie chaque fichier de `templates/commun/` à la racine **seulement s'il n'existe pas déjà** (le squelette client a pu passer avant). N'écrase jamais un fichier existant.
 - `gitignore` est copié sous le nom **`.gitignore`** (sans point dans le plugin, sinon git l'appliquerait au plugin lui-même) ;
-- `.prettierrc.json`, `.prettierignore`, `.nvmrc`, `.husky/pre-commit`.
+- `.prettierrc.json`, `.prettierignore`, `.nvmrc`, `.husky/pre-commit` et `.husky/projet-sync.sh` (appelé par `pre-commit` : sans lui, tout commit échoue).
 
 Puis, selon l'organisation :
 - **mono** : copie aussi `templates/mono/package.json` (en remplaçant `__NOM_PROJET__`) et `templates/mono/.lintstagedrc.json`, s'ils n'existent pas.
