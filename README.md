@@ -104,6 +104,7 @@ plugins/ia-kit/
 ├── agents/<nom>.md               # sous-agents
 ├── templates/                    # modèles copiés par /squelette-client et /squelette-server
 │                                 #   (commun/.husky/projet-sync.sh = script des hooks projet-sync)
+│                                 #   (commun/.husky/commit-msg = retire Co-Authored-By Claude des commits)
 ├── .mcp.json                     # déclare les serveurs MCP du plugin
 ├── mcp/pgadmin/                  # code du MCP pgadmin (dist/ = version compilée, commitée)
 └── hooks/hooks.json              # hooks (actions automatiques)
