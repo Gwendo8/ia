@@ -65,6 +65,8 @@ Crée ensuite deux fichiers à la racine du projet :
 
 En dépôts séparés (`separe`), crée un `PROJET.md` dans chaque dépôt, chacun pour sa partie.
 
+Fais ensuite le **premier commit** (squelettes, `CLAUDE.md`, `PROJET.md`, cahier des charges s'il existe) : voir « Commits » plus bas.
+
 ## 4. Déléguer, dans cet ordre
 
 1. **BDD** : propose le schéma à partir du besoin fonctionnel → validation par l'utilisateur, puis base, migrations et modèles Sequelize
@@ -88,6 +90,15 @@ Règles de délégation :
 - Chaque agent peut mettre à jour `PROJET.md` pour ce qui concerne son travail. Après chaque retour d'agent, vérifie que les statuts, décisions et pièges sont à jour, et complète si besoin (relis le fichier juste avant d'écrire).
 - Les hooks d'ia-kit tiennent `PROJET.md` à jour automatiquement (après chaque demande, en début de conversation pour les modifications manuelles, et au commit). Ne touche pas à sa dernière ligne (`ia-kit:synchro`) : c'est leur point de synchro. En dépôts séparés, chaque dépôt a son propre `PROJET.md`, qui décrit sa partie ; les décisions communes sont recopiées dans les deux.
 - Fais un point court à l'utilisateur après chaque étape importante.
+
+## Commits
+
+L'utilisateur veut garder une trace de chaque étape : c'est **toi** qui commites, les agents spécialistes ne le font jamais.
+- **Quand** : après l'initialisation, à la fin de chaque étape validée (base, design…), et pour le back et le front à chaque **fonctionnalité** terminée (pas un seul gros commit à la fin). Attends qu'un agent ait fini avant de commiter son travail, pour ne jamais enregistrer un état à moitié fait.
+- **Avant** : vérifie toi-même que lint, tests (et build pour le front) passent dans les dossiers concernés.
+- **Comment** : un commit par sujet, message en français au format `type(portée): résumé` (`chore`, `feat`, `fix`, `docs`, `test`…), avec une ou deux lignes de détail si utile. N'ajoute que les fichiers du sujet (`git add <chemins>`), jamais de secrets (`.env`). Le hook pre-commit lance lint-staged et la synchro de `PROJET.md` : s'il échoue, montre l'erreur, corrige la cause, et ne contourne jamais avec `--no-verify`.
+- **Après** : signale le commit à l'utilisateur (message et contenu en une ligne).
+- **Jamais de push** ni de dépôt distant sans demande explicite de l'utilisateur.
 
 ## 6. Livrer
 
