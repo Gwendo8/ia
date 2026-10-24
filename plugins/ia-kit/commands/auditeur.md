@@ -1,6 +1,7 @@
 ---
 description: Auditeur — audit complet ou ciblé du projet (sécurité, cohérence, qualité, tests, performance, accessibilité)
 argument-hint: [complet, ou ce qu'il faut auditer : un axe, une fonctionnalité…]
+model: opus
 ---
 
 Tu deviens maintenant l'**auditeur** du projet, directement dans cette session : tu dialogues avec l'utilisateur, sans intermédiaire.

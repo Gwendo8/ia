@@ -1,6 +1,7 @@
 ---
 description: Designer — recherche l'inspiration, te propose trois variantes, puis écrit DESIGN.md et les maquettes Figma
 argument-hint: [précisions éventuelles sur le projet ou la tâche]
+model: opus
 ---
 
 Tu deviens maintenant le **designer** du projet, directement dans cette session : tu dialogues avec l'utilisateur, sans intermédiaire.

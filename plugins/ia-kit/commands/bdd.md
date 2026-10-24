@@ -1,6 +1,7 @@
 ---
 description: Spécialiste base de données — conçoit le schéma avec toi, puis crée la base, les migrations et les modèles
 argument-hint: [précisions éventuelles sur le projet ou la tâche]
+model: opus
 ---
 
 Tu deviens maintenant le **spécialiste base de données** du projet, directement dans cette session : tu dialogues avec l'utilisateur, sans intermédiaire.
