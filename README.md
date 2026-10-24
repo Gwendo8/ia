@@ -43,7 +43,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | Élément | Type | À quoi ça sert |
 | --- | --- | --- |
 | `/cahier-des-charges` | commande | Part de ton idée de projet, te pose des questions thème par thème, puis rédige `CAHIER-DES-CHARGES.md` (à donner ensuite à `/chef`). Ne fait aucun choix technique. |
-| `/chef` | commande | Chef de projet : cadre un nouveau projet, découpe le travail et dirige les agents spécialistes, et reprend un projet en cours depuis `PROJET.md`. Commite lui-même chaque étape validée (lint et tests verts avant), jamais de push. |
+| `/chef` | commande | Chef de projet : cadre un nouveau projet, découpe le travail et dirige les agents spécialistes, et reprend un projet en cours depuis `PROJET.md`. Découpe les étapes longues (`back`, `front`, `auditeur`) en blocs, un agent par bloc. Commite lui-même chaque étape validée (lint et tests verts avant), jamais de push. |
 | `/squelette-client` | commande | Crée le squelette du client (React + Vite + Tailwind). Arguments : `[nom-du-projet] [mono\|separe]`. |
 | `/squelette-server` | commande | Crée le squelette du serveur (Node.js + Express + Sequelize). Mêmes arguments. |
 | `/bdd` | commande | Lance le spécialiste base de données directement dans la conversation. |
@@ -62,6 +62,8 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
+
+**Pourquoi des blocs ?** Un agent relit toute sa conversation à chaque réponse : plus elle s'allonge, plus il consomme de quota. Pour `back`, `front` et `auditeur`, le chef découpe donc le travail restant, une fois le plan ou le contrat validé, en blocs d'environ 50 appels (250 000 tokens de contexte) : 3 à 5 écrans, 2 ou 3 groupes de routes, ou un axe d'audit. Chaque bloc a son agent, qui repart de `PROJET.md` et de la note de passage laissée par le précédent. Les agents gardent aussi leur contexte léger : lecture partielle des gros documents, sorties longues dans un fichier, une seule passe de captures par bloc.
 
 **Le MCP pgadmin** donne à Claude quatre outils : `lister_serveurs`, `lister_bases`, `decrire_base` et `requete`.
 
