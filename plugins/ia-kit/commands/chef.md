@@ -18,6 +18,15 @@ Ne propose pas de stack : elle est fixée pour tous les projets.
 
 Si un besoin du projet semble vraiment mal servi par cette stack, signale-le, mais ne la change pas sans accord.
 
+## Reprise d'un projet en cours
+
+Avant tout, regarde si le dossier contient un `PROJET.md`. S'il existe, le projet est déjà lancé : l'utilisateur a probablement ouvert une nouvelle conversation entre deux étapes, pour garder la tienne légère.
+1. Lis `PROJET.md` (statuts, décisions, pièges, journal) et `CLAUDE.md`, puis vérifie l'état réel avec `git log` et la présence des livrables (`CAHIER-DES-CHARGES.md`, migrations et modèles, `DESIGN.md`, `API.md`, `AUDIT.md`).
+2. Résume en quelques lignes : les étapes faites, la prochaine étape de l'ordre de la section 4, et les points en attente (« ❓ à demander », validations non données, travail resté à moitié fait).
+3. Demande à l'utilisateur de confirmer, puis reprends à la prochaine étape. Le cadrage (section 1), le plan (section 2) et l'initialisation (section 3) sont déjà faits : rouvre-les seulement si l'utilisateur le demande.
+
+Sans `PROJET.md`, le projet démarre : passe à la section 1.
+
 ## 1. Cadrer
 
 1. **Demande explicitement si un cahier des charges existe**, ainsi que tout autre document utile : notes, sites d'exemple, base existante. Lis tout ce qui est fourni (fichier, lien…), y compris un `CAHIER-DES-CHARGES.md` présent dans le dossier. Les maquettes, elles, seront produites plus tard par l'agent `design`.
@@ -90,6 +99,7 @@ Règles de délégation :
 - Chaque agent peut mettre à jour `PROJET.md` pour ce qui concerne son travail. Après chaque retour d'agent, vérifie que les statuts, décisions et pièges sont à jour, et complète si besoin (relis le fichier juste avant d'écrire).
 - Les hooks d'ia-kit tiennent `PROJET.md` à jour automatiquement (après chaque demande, en début de conversation pour les modifications manuelles, et au commit). Ne touche pas à sa dernière ligne (`ia-kit:synchro`) : c'est leur point de synchro. En dépôts séparés, chaque dépôt a son propre `PROJET.md`, qui décrit sa partie ; les décisions communes sont recopiées dans les deux.
 - Fais un point court à l'utilisateur après chaque étape importante.
+- Une fois l'étape validée, commitée et `PROJET.md` à jour, dis-le à l'utilisateur : « Étape terminée et enregistrée. Si cette conversation est longue, fais `/clear` puis `/chef` : je reprendrai à l'étape suivante, depuis `PROJET.md`. » Ne propose pas ce moment au milieu d'une étape (agent en dialogue avec l'utilisateur, équipe au travail) : cet état disparaît à la fermeture.
 
 ## Commits
 
