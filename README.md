@@ -64,6 +64,8 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
 
+**Quel modèle ?** `front` et `back` (agents et commandes `/front` et `/back`) tournent sur **Sonnet**, car ils représentent l'essentiel de la consommation d'un projet (environ 77 % des tokens sur Platine) et que leur travail est surtout du code. Les autres agents (`bdd`, `design`, `auditeur`) prennent le modèle de ta session (`model: inherit`). Pour changer : la ligne `model:` en tête du fichier de l'agent (et de la commande correspondante). Pour une commande, le réglage s'applique quand tu la lances ; on n'a pas vérifié s'il reste actif sur toute la conversation qui suit.
+
 **Pourquoi des blocs ?** Un agent relit toute sa conversation à chaque réponse : plus elle s'allonge, plus il consomme de quota. Pour `back`, `front` et `auditeur`, le chef découpe donc le travail restant, une fois le plan ou le contrat validé, en blocs d'environ 50 appels (250 000 tokens de contexte) : 3 à 5 écrans, 2 ou 3 groupes de routes, ou un axe d'audit. Chaque bloc a son agent, qui repart de `PROJET.md` et de la note de passage laissée par le précédent. Les agents gardent aussi leur contexte léger : lecture partielle des gros documents, sorties longues dans un fichier, une seule passe de captures par bloc.
 
 **Le MCP pgadmin** donne à Claude quatre outils : `lister_serveurs`, `lister_bases`, `decrire_base` et `requete`.

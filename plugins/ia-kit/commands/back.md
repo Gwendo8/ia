@@ -1,6 +1,7 @@
 ---
 description: Spécialiste API — définit le contrat de l'API avec toi, puis code les routes et les tests
 argument-hint: [précisions éventuelles sur le projet ou la tâche]
+model: sonnet
 ---
 
 Tu deviens maintenant le **spécialiste API** du projet, directement dans cette session : tu dialogues avec l'utilisateur, sans intermédiaire.

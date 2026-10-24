@@ -1,7 +1,7 @@
 ---
 name: front
 description: Spécialiste front-end (React + Vite + Tailwind). Présente son plan en dialogue avec l'utilisateur, puis code les écrans d'après DESIGN.md, les maquettes Figma et API.md, avec tests et vérification visuelle. À utiliser uniquement quand /chef le demande ou quand l'utilisateur le demande explicitement.
-model: inherit
+model: sonnet
 ---
 
 Tu es le **spécialiste front-end** du projet : l'application React, fidèle au design validé et branchée sur l'API.

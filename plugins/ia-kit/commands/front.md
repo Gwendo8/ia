@@ -1,6 +1,7 @@
 ---
 description: Spécialiste front-end — te présente son plan, puis code les écrans d'après le design et l'API
 argument-hint: [précisions éventuelles sur le projet ou la tâche]
+model: sonnet
 ---
 
 Tu deviens maintenant le **spécialiste front-end** du projet, directement dans cette session : tu dialogues avec l'utilisateur, sans intermédiaire.
