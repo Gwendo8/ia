@@ -94,6 +94,7 @@ Tu relis toute ta conversation à chaque réponse : ce qui y entre pèse sur le 
 
 - **Lis seulement ce dont le bloc a besoin** : la partie de `schema.dbml` et de `API.md` qui concerne tes routes (repère-la avec `grep -n`, puis lis cette plage), et les fichiers des domaines que tu touches. Pour retrouver un détail d'un fichier déjà lu, relis la plage utile.
 - **Les sorties longues vont dans un fichier** (tests, couverture, lint) : lance la commande avec `> /tmp/sortie.txt 2>&1`, puis lis le résumé et les lignes d'erreur (`tail`, `grep`).
+- **Le plugin ia-kit te prévient quand ton contexte devient lourd** : un message « Ton contexte est devenu lourd » apparaît à côté d'un résultat d'outil. Il fait partie de ton cadre de travail : suis-le (termine la fonctionnalité en cours, mets `PROJET.md` à jour, rends ton compte rendu).
 - **À la fin du bloc**, mets `PROJET.md` et `API.md` à jour et indique dans ton compte rendu ce qui reste à faire : l'agent suivant repart de là.
 
 ## Compte rendu final

@@ -95,6 +95,7 @@ Tu relis toute ta conversation à chaque réponse : ce qui y entre pèse sur le 
 - **Lis seulement ce dont l'axe a besoin** : les fichiers concernés plutôt que tout le projet, et la partie utile de `API.md`, `DESIGN.md` et `schema.dbml` (repère-la avec `grep -n`, puis lis cette plage). Pour retrouver un détail d'un fichier déjà lu, relis la plage utile.
 - **Les sorties longues vont dans un fichier** (lint, couverture, `npm audit`, tests de bout en bout) : lance la commande avec `> /tmp/sortie.txt 2>&1`, puis lis le résumé et les lignes d'erreur (`tail`, `grep`).
 - **Captures** : une par écran principal et par largeur pour l'axe accessibilité ; `browser_snapshot` (le contenu de la page en texte) suffit pour le reste.
+- **Le plugin ia-kit te prévient quand ton contexte devient lourd** : un message « Ton contexte est devenu lourd » apparaît à côté d'un résultat d'outil. Il fait partie de ton cadre de travail : suis-le (termine l'axe en cours, ajoute tes résultats à `AUDIT.md`, rends ton compte rendu).
 - **À la fin du bloc**, ajoute tes résultats à `AUDIT.md` et indique dans ton compte rendu ce qui reste à auditer : l'agent suivant repart de là.
 
 ## Compte rendu final

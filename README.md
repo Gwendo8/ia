@@ -15,7 +15,7 @@ claude plugin install ia-kit@gwendo8
 
 > ⚠️ `/plugin` ne marche pas dans l'extension VS Code : toujours passer par `claude plugin ...` dans un terminal.
 
-**Où le plugin est actif (la « portée »)** : par défaut, il s'installe pour **tous tes projets** de l'ordinateur (portée `user`), sans rien à refaire projet par projet. Les commandes ne se lancent que si tu les tapes, et les hooks ne font rien sans `PROJET.md` : il ne gêne donc pas les autres projets. Deux autres portées existent, à installer depuis le dossier du projet :
+**Où le plugin est actif (la « portée »)** : par défaut, il s'installe pour **tous tes projets** de l'ordinateur (portée `user`), sans rien à refaire projet par projet. Les commandes ne se lancent que si tu les tapes, et les hooks de synchro ne font rien sans `PROJET.md` et celui de surveillance ne concerne que les agents `back`, `front` et `auditeur` : il ne gêne donc pas les autres projets. Deux autres portées existent, à installer depuis le dossier du projet :
 
 | Portée | Où il est actif | Pour qui |
 | --- | --- | --- |
@@ -59,6 +59,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | `pgadmin` | MCP | Lit les bases PostgreSQL à partir des serveurs de pgAdmin (voir ci-dessous). |
 | `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : les agents `design`, `front` et `auditeur` s'en servent pour regarder des pages en capture d'écran (inspiration, vérification des écrans). |
 | `projet-sync` | hooks | Gardent `PROJET.md` à jour tout seuls : en début de conversation (rattrape tes modifications manuelles), à la fin de chaque demande qui a modifié le projet, et à chaque commit (Claude met `PROJET.md` à jour et l'ajoute au même commit). Ne font rien dans un projet sans `PROJET.md`. Script : `templates/commun/.husky/projet-sync.sh` (copié dans chaque projet par les squelettes). |
+| `surveillance-contexte` | hooks | Prévient les agents `back`, `front` et `auditeur` quand leur contexte dépasse 250 000 tokens (ils relisent tout à chaque réponse, donc consomment beaucoup de quota) : ils terminent la fonctionnalité en cours, mettent `PROJET.md` à jour et rendent la main au chef, qui lance un agent neuf. Script : `hooks/surveillance-contexte.mjs`. |
 | Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
@@ -71,6 +72,13 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 - Les mots de passe viennent du fichier standard de PostgreSQL : `~/.pgpass` (Mac) ou `%APPDATA%\postgresql\pgpass.conf` (Windows). En local, souvent inutile.
 - **Lecture seule partout**, sauf sur une base de test : nom en `_test` **et** serveur local.
 - Si pgAdmin est rangé ailleurs que d'habitude, indiquer le chemin de `pgadmin4.db` dans la variable d'environnement `PGADMIN_DB`.
+
+**Le hook surveillance-contexte** tourne après chaque appel d'outil d'un agent `back`, `front` ou `auditeur` (jamais pour la session principale ni pour les autres agents).
+
+- **Mesure** : il lit dans le fichier de session de l'agent la taille de son contexte à sa dernière réponse. Ce format n'est pas garanti par Claude Code : si le fichier est illisible, il compte les appels d'outils et prévient à 50.
+- **Message** : au seuil, il ajoute à côté du résultat d'outil un message qui demande à l'agent de finir sa fonctionnalité, de mettre `PROJET.md` à jour et de rendre son compte rendu avec ce qui reste à faire. Il le répète tous les 10 appels si l'agent continue. Les agents savent que ce message est légitime (section « Garder un contexte léger » de leur fichier).
+- **Réglage** : `IA_KIT_SEUIL_CONTEXTE` (250 000 par défaut) et `IA_KIT_SEUIL_APPELS` (50, pour le repli), à poser dans l'environnement avant de lancer `claude`.
+- Il ne bloque jamais rien : en cas d'erreur, il se tait.
 
 **Les hooks projet-sync** gardent `PROJET.md` (la carte du projet) à jour, même après tes modifications à la main.
 
@@ -111,7 +119,9 @@ plugins/ia-kit/
 │                                 #   (commun/.husky/commit-msg = retire Co-Authored-By Claude des commits)
 ├── .mcp.json                     # déclare les serveurs MCP du plugin
 ├── mcp/pgadmin/                  # code du MCP pgadmin (dist/ = version compilée, commitée)
-└── hooks/hooks.json              # hooks (actions automatiques)
+└── hooks/                        # hooks (actions automatiques)
+    ├── hooks.json                #   déclaration des hooks
+    └── surveillance-contexte.mjs #   script du hook surveillance-contexte
 ```
 
 ## Développer
