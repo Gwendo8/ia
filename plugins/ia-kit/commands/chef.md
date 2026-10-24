@@ -88,9 +88,19 @@ Cet ordre est voulu par l'utilisateur : chaque étape commence quand la précéd
 
 Règles de délégation :
 - Utilise les agents spécialistes disponibles (`design`, `bdd`, `back`, `front`, `auditeur`…). Si l'un d'eux n'existe pas encore, utilise un agent généraliste en lui décrivant précisément son rôle, et signale à l'utilisateur que ce spécialiste mériterait d'être créé dans ia-kit.
-- Donne à chaque agent un brief autonome : le contexte du projet, sa tâche exacte, les fichiers ou maquettes concernés, les conventions à suivre. Si tu les lances en sous-agents, précise-le dans le brief : ils t'enverront leurs questions. Transmets-les à l'utilisateur **telles quelles**, attends sa réponse, puis renvoie-la **au même agent** (pas un nouveau) pour qu'il continue avec tout son contexte.
+- Donne à chaque agent un brief autonome : le contexte du projet, sa tâche exacte, les fichiers ou maquettes concernés, les conventions à suivre. Si tu les lances en sous-agents, précise-le dans le brief : ils t'enverront leurs questions. Transmets-les à l'utilisateur **telles quelles**, attends sa réponse, puis renvoie-la **à l'agent qui l'a posée** pour qu'il continue avec son contexte.
 - Demande à chaque agent de te rendre : ce qu'il a fait, les décisions qu'il a prises, les pièges rencontrés et les fichiers créés ou modifiés (pour tenir à jour la carte des fichiers de `PROJET.md`).
 - Respecte l'ordre des étapes ci-dessus ; à l'intérieur d'une étape seulement, lance en parallèle ce qui est indépendant.
+
+### Découper les étapes longues en blocs
+
+Un agent relit toute sa conversation à chaque réponse : plus elle s'allonge, plus chaque réponse consomme de quota. Sur Platine, un seul agent `front` a enchaîné 489 appels avec un contexte monté jusqu'à 960 000 tokens, soit 212 millions de tokens relus ; découpé en blocs courts, le même travail aurait consommé environ trois fois moins (estimation faite sur ce cas). Un agent qui travaille par blocs d'environ **50 appels, ou 250 000 tokens de contexte**, garde un contexte léger.
+
+- **Étapes concernées** : `back`, `front` et `auditeur`. `design` mène un dialogue continu avec l'utilisateur et `bdd` est courte : un seul agent chacun.
+- **Découpage** : une fois le dialogue de l'agent terminé (plan du front, contrat du back) et validé par l'utilisateur, découpe le travail restant d'après ce plan. Front : 3 à 5 écrans par bloc. Back : 2 ou 3 groupes de routes. Auditeur : un axe d'audit (sécurité, cohérence…). Le premier bloc couvre les fondations (thème, routeur, composants communs ; configuration, middlewares), dont les suivants dépendent. Il reste confié à l'agent qui a mené le dialogue, puisqu'il connaît les choix de l'utilisateur. Tu décides seul du découpage et l'annonces à l'utilisateur en une ligne.
+- **Un agent par bloc, l'un après l'autre** : le brief donne le périmètre précis du bloc (la liste des écrans ou des routes), et renvoie à `PROJET.md` pour l'état d'avancement et au plan ou contrat validé (`DESIGN.md`, `API.md`). Les agents suivants commencent directement par la phase de code, sur leur périmètre.
+- **Entre deux blocs** : vérifie que `PROJET.md` est à jour (statuts, fichiers) et commite (voir « Commits »), puis lance le bloc suivant.
+- **Un agent qui déborde** : s'il rend la main avec du travail restant ou signale que son contexte devient lourd, lance un agent neuf pour la suite.
 
 ## 5. Coordonner et tenir PROJET.md à jour
 

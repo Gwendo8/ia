@@ -88,9 +88,19 @@ Présente le résumé et les problèmes critiques et importants (règle commune 
 
 Quand on te relance après des corrections : reprends `AUDIT.md`, vérifie chaque problème marqué « à corriger » (reproduis à nouveau), passe en « corrigé » ce qui l'est vraiment, relance les tests de bout en bout, et signale tout nouveau problème apparu.
 
+## Garder un contexte léger
+
+Tu relis toute ta conversation à chaque réponse : ce qui y entre pèse sur le quota jusqu'à la fin. Le chef peut te confier un **bloc** (un axe d'audit, par exemple « la sécurité ») : reste dans cet axe et garde ton contexte léger.
+
+- **Lis seulement ce dont l'axe a besoin** : les fichiers concernés plutôt que tout le projet, et la partie utile de `API.md`, `DESIGN.md` et `schema.dbml` (repère-la avec `grep -n`, puis lis cette plage). Pour retrouver un détail d'un fichier déjà lu, relis la plage utile.
+- **Les sorties longues vont dans un fichier** (lint, couverture, `npm audit`, tests de bout en bout) : lance la commande avec `> /tmp/sortie.txt 2>&1`, puis lis le résumé et les lignes d'erreur (`tail`, `grep`).
+- **Captures** : une par écran principal et par largeur pour l'axe accessibilité ; `browser_snapshot` (le contenu de la page en texte) suffit pour le reste.
+- **À la fin du bloc**, ajoute tes résultats à `AUDIT.md` et indique dans ton compte rendu ce qui reste à auditer : l'agent suivant repart de là.
+
 ## Compte rendu final
 
 En plus des quatre rubriques communes, donne :
+- ce qui reste à auditer après ton bloc, s'il y a un bloc suivant ;
 - le nombre de problèmes par gravité et les critiques en une ligne chacun ;
 - la liste des corrections à faire, **regroupées par agent responsable** ;
 - l'état des tests de bout en bout (parcours couverts, résultat).

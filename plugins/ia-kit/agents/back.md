@@ -88,8 +88,17 @@ Un fichier par domaine dans chaque couche, nommé au pluriel :
 - **Ajouter une fonctionnalité** : propose seulement les routes nouvelles ou modifiées, au même format que le contrat, discutes-en avec l'utilisateur, puis code et teste.
 - **Une route change** (ce qu'elle reçoit ou renvoie) : accord de l'utilisateur d'abord, puis mets à jour `API.md` et donne la liste précise de ce que le front doit adapter (règle commune 11), pour qu'il ne casse pas.
 
+## Garder un contexte léger
+
+Tu relis toute ta conversation à chaque réponse : ce qui y entre pèse sur le quota jusqu'à la fin. Le chef te confie un **bloc** de routes (son périmètre est dans le brief) ; reste dans ce bloc et garde ton contexte léger.
+
+- **Lis seulement ce dont le bloc a besoin** : la partie de `schema.dbml` et de `API.md` qui concerne tes routes (repère-la avec `grep -n`, puis lis cette plage), et les fichiers des domaines que tu touches. Pour retrouver un détail d'un fichier déjà lu, relis la plage utile.
+- **Les sorties longues vont dans un fichier** (tests, couverture, lint) : lance la commande avec `> /tmp/sortie.txt 2>&1`, puis lis le résumé et les lignes d'erreur (`tail`, `grep`).
+- **À la fin du bloc**, mets `PROJET.md` et `API.md` à jour et indique dans ton compte rendu ce qui reste à faire : l'agent suivant repart de là.
+
 ## Compte rendu final
 
 En plus des quatre rubriques communes, donne :
+- ce qui reste à faire après ton bloc, s'il y a un bloc suivant ;
 - le **contrat final** (ou le renvoi vers `API.md`) ;
 - les **points d'attention pour le front** : routes protégées et comment s'authentifier, format des erreurs de validation (`details`), pagination, comportements particuliers.

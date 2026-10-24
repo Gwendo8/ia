@@ -80,7 +80,7 @@ C'est la règle centrale de l'utilisateur : **on ne mélange jamais les rôles**
 Dans les deux cas, l'API est **imitée** (`vi.stubGlobal('fetch', …)`, comme dans `HomePage.test.jsx`) : le vrai fonctionnement de l'API est déjà testé par le back. Les tests de bout en bout (front et back réels ensemble) reviennent à l'auditeur.
 
 Lance ensuite `npm run test:coverage` : le rapport montre les lignes que les tests ne parcourent jamais. On ne vise pas 100 %, mais aucune partie importante (formulaires, hooks, gestion des erreurs) ne doit rester sans test.
-3. **Vérification visuelle** : lance l'application (`npm run dev`, et le serveur si besoin), ouvre chaque écran avec le navigateur (outils `browser_*` du serveur `playwright`), en largeur ordinateur puis téléphone, prends des captures et **compare-les aux maquettes Figma**. Corrige les écarts.
+3. **Vérification visuelle**, une fois les écrans du bloc terminés : lance l'application (`npm run dev`, et le serveur si besoin), ouvre chaque écran du bloc avec le navigateur (outils `browser_*` du serveur `playwright`), en largeur ordinateur puis téléphone, prends **une capture par écran et par largeur** et **compare-les aux maquettes Figma**. Corrige les écarts. Pendant que tu codes, les tests et `browser_snapshot` (le contenu de la page en texte) suffisent pour vérifier tes changements.
 4. **Contrôle qualité** : si le skill `web-design-guidelines` (Vercel) est installé, applique-le aux fichiers modifiés ; si `impeccable` est installé, lance son détecteur de défauts. Corrige ce qu'ils signalent.
 5. `npm run lint`, `npm test` et `npm run build` passent.
 
@@ -91,9 +91,19 @@ Lance ensuite `npm run test:coverage` : le rapport montre les lignes que les tes
 - **Changement de design** : suis la liste précise donnée par l'agent `design` et le `DESIGN.md` mis à jour, puis refais la vérification visuelle des écrans concernés.
 - **Une route de l'API a changé** : mets à jour le service concerné d'après `API.md`, puis vérifie les hooks et écrans qui l'utilisent.
 
+## Garder un contexte léger
+
+Tu relis toute ta conversation à chaque réponse : ce qui y entre pèse sur le quota jusqu'à la fin. Le chef te confie un **bloc** d'écrans (son périmètre est dans le brief) ; reste dans ce bloc et garde ton contexte léger.
+
+- **Lis seulement ce dont le bloc a besoin** : la section de `DESIGN.md` et de `API.md` qui concerne tes écrans et tes routes (repère-la avec `grep -n` sur les titres, puis lis cette plage). Pour retrouver un détail d'un fichier déjà lu, relis la plage utile.
+- **Les sorties longues vont dans un fichier** (tests, lint, build, e2e) : lance la commande avec `> /tmp/sortie.txt 2>&1`, puis lis le résumé et les lignes d'erreur (`tail`, `grep`).
+- **Une seule passe de captures par bloc**, à la fin (voir « Tester et vérifier »).
+- **À la fin du bloc**, mets `PROJET.md` à jour et indique dans ton compte rendu ce qui reste à faire : l'agent suivant repart de là.
+
 ## Compte rendu final
 
 En plus des quatre rubriques communes, donne :
+- ce qui reste à faire après ton bloc, s'il y a un bloc suivant ;
 - les écrans réalisés, avec leur route ;
 - les bibliothèques installées et pourquoi ;
 - les écarts restants avec les maquettes, s'il y en a, et pourquoi ;
