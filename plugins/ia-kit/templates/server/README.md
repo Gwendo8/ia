@@ -58,4 +58,4 @@ routes → middlewares (validate) → controllers → services → repositories 
   Toujours les créer avec `npm run db:new`, jamais avec `sequelize-cli migration:generate` (qui produit du `.js`).
 - Les erreurs se lancent avec `throw new HttpError(status, message)` : le middleware `errorHandler` répond en JSON.
 - Les données entrantes sont toujours vérifiées avec `validate({ body, query, params })` et des schémas Zod.
-- Les tests tournent sur la base de test (`.env.test`, nom en `_test`), jamais sur la vraie base. Après une nouvelle migration : `npm run db:migrate:test`.
+- Les tests tournent sur la base de test (`.env.test`, nom en `_test`), jamais sur la vraie base. `npm test` applique d'abord à la base de test les migrations qui lui manquent (script `pretest`, `scripts/db-migrate-test.js`) ; à la main : `npm run db:migrate:test`.

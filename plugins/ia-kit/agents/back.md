@@ -76,7 +76,7 @@ Un fichier par domaine dans chaque couche, nommé au pluriel :
 1. Code domaine par domaine, en suivant le contrat validé.
 2. **Tests unitaires** (`tests/unit/`) pour la logique métier des services qui contient de vraies règles (calculs, conditions), sans base de données.
 3. **Tests d'intégration** (`tests/integration/`, Supertest) pour **chaque route** : le cas qui marche, les données invalides (`400`), l'introuvable (`404`), les droits (`401` / `403`) et les conflits éventuels.
-   - Ils tournent sur la **base de test** (`.env.test`, nom en `_test`, créée par l'agent `bdd`). Lance `npm run db:migrate:test` si la base de test n'est pas à jour.
+   - Ils tournent sur la **base de test** (`.env.test`, nom en `_test`, créée par l'agent `bdd`). `npm test` la met à jour tout seul avant de tourner (script `pretest`) ; à la main : `npm run db:migrate:test`.
    - Chaque test repart d'une base vide : `beforeEach(() => sequelize.truncate({ cascade: true, restartIdentity: true }))`. Chaque test crée lui-même les données dont il a besoin.
    - Les **services extérieurs** (envoi d'email, paiement…) sont les seuls à être imités (mocks) : on ne les appelle jamais pour de vrai pendant les tests.
 4. **Couverture** : lance `npm run test:coverage`. On ne vise pas 100 %, mais aucune partie importante (règles métier, droits, erreurs) ne doit rester sans test.
