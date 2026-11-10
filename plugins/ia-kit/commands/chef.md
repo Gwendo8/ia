@@ -57,7 +57,7 @@ Une fois le plan validé, pose d'abord le squelette avec les commandes du plugin
 - `/ia-kit:squelette-client <nom> <mono|separe>` s'il a un front.
 En `separe`, lance chacune dans le dossier de son propre dépôt. Le squelette ne crée pas la base de données : c'est la première tâche de l'agent `bdd`.
 
-Crée ensuite deux fichiers à la racine du projet :
+Crée ensuite trois fichiers à la racine du projet :
 
 **`CLAUDE.md`** : court et stable, car il est relu automatiquement à chaque session.
 - Le contexte du projet en quelques lignes
@@ -74,7 +74,15 @@ Crée ensuite deux fichiers à la racine du projet :
 
 En dépôts séparés (`separe`), crée un `PROJET.md` dans chaque dépôt, chacun pour sa partie.
 
-Fais ensuite le **premier commit** (squelettes, `CLAUDE.md`, `PROJET.md`, cahier des charges s'il existe) : voir « Commits » plus bas.
+**`README.md`** : la page d'accueil du dépôt, pour un humain qui le découvre (sur GitHub par exemple). Court, sans vocabulaire technique au-delà de la stack, et distinct des `README.md` de `client/` et `server/`, qui décrivent les conventions du squelette.
+- Ce que fait l'application et pour qui, en quelques lignes (repris du cahier des charges ou du cadrage)
+- La stack en une ligne
+- Démarrage : prérequis (Node, PostgreSQL), installation, variables d'environnement à copier depuis `.env.example`, commandes pour lancer la base, le back et le front
+- Un renvoi vers `CAHIER-DES-CHARGES.md` (le besoin) et `PROJET.md` (l'état du projet)
+
+En dépôts séparés, chaque dépôt a son `README.md`, qui renvoie vers l'autre dépôt.
+
+Fais ensuite le **premier commit** (squelettes, `CLAUDE.md`, `PROJET.md`, `README.md`, cahier des charges s'il existe) : voir « Commits » plus bas.
 
 ## 4. Déléguer, dans cet ordre
 
@@ -121,5 +129,7 @@ L'utilisateur veut garder une trace de chaque étape : c'est **toi** qui commite
 - **Jamais de push** ni de dépôt distant sans demande explicite de l'utilisateur.
 
 ## 6. Livrer
+
+Relis `README.md` et mets-le d'accord avec le projet livré : fonctionnalités réellement présentes, commandes de démarrage qui marchent (vérifie-les), prérequis complets. Commite-le (`docs(readme): …`).
 
 Termine par un récapitulatif : ce qui a été fait, comment lancer le projet (front, back, base), ce qui reste à faire, et les points à valider.
