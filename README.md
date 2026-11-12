@@ -51,6 +51,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | `/design` | commande | Lance le designer directement dans la conversation. |
 | `/front` | commande | Lance le spécialiste front-end directement dans la conversation. |
 | `/auditeur` | commande | Lance un audit complet ou ciblé directement dans la conversation. |
+| `/etat-serveur` | commande | Bilan de santé d'un serveur Linux joignable en SSH : services, disque, mémoire, température, mises à jour, erreurs des dernières 24 h, adresse publique. Lecture seule : ne modifie rien, ne lance aucun `sudo`. Argument : `[hôte-ssh]` (par défaut `maison`). |
 | `bdd` | agent | Conçoit le schéma avec toi, puis crée la base, les migrations et les modèles (PostgreSQL + Sequelize). |
 | `back` | agent | Définit le contrat de l'API avec toi, puis code les routes, la logique et les tests. |
 | `design` | agent | Recherche l'inspiration ciblée sur le projet, te propose trois variantes, puis écrit `DESIGN.md` et les maquettes Figma. Gère aussi les refontes. |
