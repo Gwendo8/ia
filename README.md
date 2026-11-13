@@ -15,7 +15,7 @@ claude plugin install ia-kit@gwendo8
 
 > ⚠️ `/plugin` ne marche pas dans l'extension VS Code : toujours passer par `claude plugin ...` dans un terminal.
 
-**Où le plugin est actif (la « portée »)** : par défaut, il s'installe pour **tous tes projets** de l'ordinateur (portée `user`), sans rien à refaire projet par projet. Les commandes ne se lancent que si tu les tapes, et les hooks de synchro ne font rien sans `PROJET.md` et celui de surveillance ne concerne que les agents `back`, `front` et `auditeur` : il ne gêne donc pas les autres projets. Deux autres portées existent, à installer depuis le dossier du projet :
+**Où le plugin est actif (la « portée »)** : par défaut, il s'installe pour **tous tes projets** de l'ordinateur (portée `user`), sans rien à refaire projet par projet. Les commandes ne se lancent que si tu les tapes, et les hooks de synchro ne font rien sans `PROJET.md` et celui de surveillance ne concerne que les agents `back`, `front` et `auditeur` : il ne gêne donc pas les autres projets. Le hook `reperage-erreurs`, lui, est actif partout, et c'est voulu : une erreur peut revenir dans n'importe quel projet. Deux autres portées existent, à installer depuis le dossier du projet :
 
 | Portée | Où il est actif | Pour qui |
 | --- | --- | --- |
@@ -61,7 +61,8 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | `playwright` | MCP | Navigateur invisible et isolé (jamais ton vrai Chrome) : les agents `design`, `front` et `auditeur` s'en servent pour regarder des pages en capture d'écran (inspiration, vérification des écrans). |
 | `projet-sync` | hooks | Gardent `PROJET.md` à jour tout seuls : en début de conversation (rattrape tes modifications manuelles), à la fin de chaque demande qui a modifié le projet, et à chaque commit (Claude met `PROJET.md` à jour et l'ajoute au même commit). Ne font rien dans un projet sans `PROJET.md`. Script : `templates/commun/.husky/projet-sync.sh` (copié dans chaque projet par les squelettes). |
 | `surveillance-contexte` | hooks | Prévient les agents `back`, `front` et `auditeur` quand leur contexte dépasse 250 000 tokens (ils relisent tout à chaque réponse, donc consomment beaucoup de quota) : ils terminent la fonctionnalité en cours, mettent `PROJET.md` à jour et rendent la main au chef, qui lance un agent neuf. Script : `hooks/surveillance-contexte.mjs`. |
-| Skills | — | Aucun pour l'instant (on préfère les commandes, qui ne se déclenchent pas toutes seules). |
+| `reperage-erreurs` | hooks | Quand ton message ressemble à une correction (« tu as oublié », « c'est faux », « ça marche pas »…), rappelle à Claude de vérifier s'il a fait une erreur à noter avec le skill `erreurs`. Sans mot repéré, ne fait rien. Script : `hooks/reperage-erreurs.mjs`. |
+| `erreurs` | skill | Journal global des erreurs de Claude (`~/.claude/erreurs.md`) : une erreur vue une fois y est notée ; si elle revient, elle devient une règle dans la section « Erreurs à ne pas refaire » de ton `~/.claude/CLAUDE.md` et quitte le journal ; si elle revient malgré la règle, Claude propose un hook. Seul skill du plugin : ici on veut justement qu'il se déclenche sans qu'on y pense (ailleurs, on préfère les commandes). |
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
 
@@ -82,6 +83,13 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 - **Message** : au seuil, il ajoute à côté du résultat d'outil un message qui demande à l'agent de finir sa fonctionnalité, de mettre `PROJET.md` à jour et de rendre son compte rendu avec ce qui reste à faire. Il le répète tous les 10 appels si l'agent continue. Les agents savent que ce message est légitime (section « Garder un contexte léger » de leur fichier).
 - **Réglage** : `IA_KIT_SEUIL_CONTEXTE` (250 000 par défaut) et `IA_KIT_SEUIL_APPELS` (50, pour le repli), à poser dans l'environnement avant de lancer `claude`.
 - Il ne bloque jamais rien : en cas d'erreur, il se tait.
+
+**Le journal des erreurs** (hook `reperage-erreurs` + skill `erreurs`) sert à ne pas refaire deux fois la même erreur, quel que soit le projet.
+
+- **Le réveil** : un hook ne comprend pas le sens d'un message. Il cherche des tournures typiques d'une correction (des tournures entières plutôt que des mots seuls comme « non » ou « erreur », qui déclencheraient pour rien) et, s'il en trouve, glisse un rappel d'une ligne à Claude, qui juge si c'est vraiment une erreur. Les erreurs que Claude découvre lui-même (corrigées seul, révélées par un test, un audit, un bug trouvé plus tard) passent par une consigne du `~/.claude/CLAUDE.md` global (« dis-le et note-la »), car aucun hook ne peut les repérer.
+- **Les paliers** : journal (vue une fois) → règle dans le CLAUDE.md global (revenue) → hook proposé (revenue malgré la règle).
+- **Coût** : le journal n'est jamais lu au démarrage, Claude cherche dedans seulement quand une erreur arrive. Seules les erreurs passées en règle sont lues à chaque conversation (une ligne chacune).
+- Le journal et la section « Erreurs à ne pas refaire » vivent dans `~/.claude/`, hors du dépôt : ils sont propres à chaque ordinateur.
 
 **Les hooks projet-sync** gardent `PROJET.md` (la carte du projet) à jour, même après tes modifications à la main.
 
@@ -114,7 +122,7 @@ mkdir -p ~/.claude/skills/web-design-guidelines && curl -fsSL https://raw.github
 .claude-plugin/marketplace.json   # déclare les plugins du dépôt
 plugins/ia-kit/
 ├── .claude-plugin/plugin.json    # infos du plugin (nom, version…)
-├── skills/<nom>/SKILL.md         # skills, utilisés automatiquement par Claude
+├── skills/<nom>/SKILL.md         # skills, utilisés automatiquement par Claude (erreurs)
 ├── commands/<nom>.md             # commandes /slash
 ├── agents/<nom>.md               # sous-agents
 ├── templates/                    # modèles copiés par /squelette-client et /squelette-server
@@ -124,7 +132,8 @@ plugins/ia-kit/
 ├── mcp/pgadmin/                  # code du MCP pgadmin (dist/ = version compilée, commitée)
 └── hooks/                        # hooks (actions automatiques)
     ├── hooks.json                #   déclaration des hooks
-    └── surveillance-contexte.mjs #   script du hook surveillance-contexte
+    ├── surveillance-contexte.mjs #   script du hook surveillance-contexte
+    └── reperage-erreurs.mjs      #   script du hook reperage-erreurs
 ```
 
 ## Développer

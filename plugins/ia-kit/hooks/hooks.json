@@ -1,6 +1,17 @@
 {
-  "description": "Garde PROJET.md à jour (modifications manuelles rattrapées en début de conversation, PROJET.md suivi après chaque demande qui modifie le projet) et prévient les agents back, front et auditeur quand leur contexte devient trop lourd.",
+  "description": "Garde PROJET.md à jour (modifications manuelles rattrapées en début de conversation, PROJET.md suivi après chaque demande qui modifie le projet), prévient les agents back, front et auditeur quand leur contexte devient trop lourd, et rappelle à Claude de noter ses erreurs quand un message ressemble à une correction.",
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/reperage-erreurs.mjs\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "hooks": [
