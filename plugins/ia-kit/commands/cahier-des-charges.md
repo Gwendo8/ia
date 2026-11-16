@@ -33,7 +33,7 @@ Socle commun, dans cet ordre (les thèmes propres au projet s'insèrent là où 
 4. **Les fonctionnalités** : ce que chaque profil doit pouvoir faire, sous forme de parcours concrets ; puis le tri entre **indispensable en V1** et **plus tard**
 5. **Les données** : ce qu'on manipule en termes métier (« des clients, des réservations… »), d'où elles viennent, les données sensibles ou personnelles (RGPD)
 6. **Les écrans envisagés** : la liste des pages principales et ce qu'on y trouve, sans parler de style (le design viendra plus tard)
-7. **Les contraintes** : délai, budget, hébergement (par défaut : gratuit et de qualité), appareils (ordinateur, mobile), intégrations externes (paiement, e-mails, autre application…)
+7. **Les contraintes** : délai, budget, hébergement (par défaut : le serveur Linux personnel de l'utilisateur), appareils (ordinateur, mobile), intégrations externes (paiement, e-mails, autre application…)
 8. **Le hors périmètre** : ce que le projet ne fera **pas**, pour éviter les malentendus
 
 Après chaque thème, résume en quelques lignes ce que tu as retenu et fais-le confirmer.

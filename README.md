@@ -43,7 +43,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | Élément | Type | À quoi ça sert |
 | --- | --- | --- |
 | `/cahier-des-charges` | commande | Part de ton idée de projet, te pose des questions thème par thème, puis rédige `CAHIER-DES-CHARGES.md` (à donner ensuite à `/chef`). Ne fait aucun choix technique. |
-| `/chef` | commande | Chef de projet : cadre un nouveau projet, découpe le travail et dirige les agents spécialistes, et reprend un projet en cours depuis `PROJET.md`. Découpe les étapes longues (`back`, `front`, `auditeur`) en blocs, un agent par bloc. Crée le `README.md` du projet au cadrage (page d'accueil du dépôt) et le relit à la livraison. Commite lui-même chaque étape validée (lint et tests verts avant), jamais de push. |
+| `/chef` | commande | Chef de projet : cadre un nouveau projet, découpe le travail et dirige les agents spécialistes, et reprend un projet en cours depuis `PROJET.md`. Si le projet sort de la stack habituelle (autre langage), s'arrête et décide avec toi avant de lancer squelettes ou agents. Découpe les étapes longues (`back`, `front`, `auditeur`) en blocs, un agent par bloc. Crée le `README.md` du projet au cadrage (page d'accueil du dépôt) et le relit à la livraison. Commite lui-même chaque étape validée (lint et tests verts avant), jamais de push. |
 | `/squelette-client` | commande | Crée le squelette du client (React + Vite + Tailwind). Arguments : `[nom-du-projet] [mono\|separe]`. |
 | `/squelette-server` | commande | Crée le squelette du serveur (Node.js + Express + Sequelize). Mêmes arguments. |
 | `/bdd` | commande | Lance le spécialiste base de données directement dans la conversation. |
