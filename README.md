@@ -149,7 +149,7 @@ plugins/ia-kit/
   (Ce sont les hooks git **de ce dépôt**, pour développer le plugin ; à ne pas confondre avec les hooks projet-sync, qui tournent dans tes projets.)
   Le hook `pre-commit` fait alors trois choses avant chaque commit :
   - il **bloque** le commit si le tableau « Contenu du plugin » ne correspond plus au plugin, dans les deux sens : élément (commande, agent, skill, MCP, hooks) sans sa ligne, ou ligne d'un élément supprimé (script `.githooks/verifier-readme.js`) ;
-  - il **bloque** le commit si le bloc « Règles communes » n'est plus identique dans tous les agents qui en ont un (`chercheur` et `lecteur`, simples agents de lecture, n'en ont pas) ;
+  - il **bloque** le commit si un agent n'a pas le bloc « Règles communes » ou si ce bloc n'est plus identique dans tous les agents. Seuls les agents de lecture (`chercheur`, `lecteur`) en sont dispensés : ils sont listés dans la variable `AGENTS_LECTURE` du hook. Un nouvel agent est donc vérifié d'office ; pour un nouvel agent de lecture, ajouter son nom à cette liste (le hook le rappelle s'il bloque) ;
   - si le code du MCP pgadmin a changé, il **relance la compilation** (`npm run build`) et ajoute `dist/` au commit.
 
 - **Hook Claude de ce dépôt** (`.claude/settings.json`, actif tout seul quand Claude travaille ici) : à la fin d'une demande où Claude a modifié des fichiers du plugin sans toucher au README, il est relancé une fois pour vérifier que le README décrit toujours la réalité (descriptions, structure, explications). Le pre-commit ne vérifie que le tableau ; ce hook s'occupe du sens. Il ne couvre pas tes modifications manuelles.

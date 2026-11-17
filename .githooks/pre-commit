@@ -1,7 +1,8 @@
 #!/bin/sh
 # Avant chaque commit :
 # 1) bloque si le tableau « Contenu du plugin » du README ne correspond plus aux éléments du plugin ;
-# 2) bloque si le bloc « Règles communes » n'est plus identique dans tous les agents qui en ont un ;
+# 2) bloque si un agent n'a pas le bloc « Règles communes » ou s'il n'est plus identique partout
+#    (sauf les agents de lecture listés dans AGENTS_LECTURE) ;
 # 3) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
 #    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
@@ -13,16 +14,26 @@ MCP=plugins/ia-kit/mcp/pgadmin
 #    (élément ajouté sans sa ligne, ou ligne d'un élément supprimé) : on bloque.
 node .githooks/verifier-readme.js
 
-# 2) Un agent modifié : le bloc « Règles communes » doit rester identique dans tous les agents
-#    (un agent ne voit que son propre fichier, d'où les copies). On compare les versions du commit.
-#    Les agents sans ce bloc (chercheur, lecteur : de petits agents de lecture) sont laissés de côté.
+# 2) Un agent modifié : le bloc « Règles communes » doit être présent et identique dans tous les
+#    agents (un agent ne voit que son propre fichier, d'où les copies). On compare les versions du commit.
+#    Seuls les agents de lecture listés dans AGENTS_LECTURE n'ont pas ce bloc : ce sont de petits agents
+#    lancés pour une recherche, à qui les règles des spécialistes feraient lire trois documents à chaque fois.
+#    Un nouvel agent est donc vérifié d'office ; un nouvel agent de lecture s'ajoute à cette liste.
+AGENTS_LECTURE="chercheur lecteur"
 if git diff --cached --name-only | grep -q '^plugins/ia-kit/agents/.*\.md$'; then
   REF_FILE=""
   REF_SUM=""
   DIFFERENTS=""
+  SANS_BLOC=""
   for f in $(git ls-files 'plugins/ia-kit/agents/*.md'); do
+    NOM=$(basename "$f" .md)
+    case " $AGENTS_LECTURE " in *" $NOM "*) continue ;; esac
     BLOC=$(git show ":$f" | awk '/^## Règles communes/ { on = 1; print; next } on && /^## / { exit } on')
-    [ -n "$BLOC" ] || continue
+    if [ -z "$BLOC" ]; then
+      SANS_BLOC="$SANS_BLOC
+  - $f"
+      continue
+    fi
     SUM=$(printf '%s' "$BLOC" | shasum | cut -d' ' -f1)
     if [ -z "$REF_SUM" ]; then
       REF_FILE=$f
@@ -32,6 +43,12 @@ if git diff --cached --name-only | grep -q '^plugins/ia-kit/agents/.*\.md$'; the
   - $f"
     fi
   done
+  if [ -n "$SANS_BLOC" ]; then
+    echo "pre-commit : commit bloqué, ces agents n'ont pas de bloc « Règles communes » :$SANS_BLOC"
+    echo "Si c'est un spécialiste, recopie-lui le bloc d'un autre agent."
+    echo "Si c'est un petit agent de lecture, ajoute son nom à AGENTS_LECTURE dans .githooks/pre-commit."
+    exit 1
+  fi
   if [ -n "$DIFFERENTS" ]; then
     echo "pre-commit : commit bloqué, le bloc « Règles communes » n'est plus identique dans tous les agents."
     echo "Différent de $REF_FILE :$DIFFERENTS"
