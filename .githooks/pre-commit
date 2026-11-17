@@ -19,7 +19,7 @@ node .githooks/verifier-readme.js
 #    Seuls les agents de lecture listés dans AGENTS_LECTURE n'ont pas ce bloc : ce sont de petits agents
 #    lancés pour une recherche, à qui les règles des spécialistes feraient lire trois documents à chaque fois.
 #    Un nouvel agent est donc vérifié d'office ; un nouvel agent de lecture s'ajoute à cette liste.
-AGENTS_LECTURE="chercheur lecteur"
+AGENTS_LECTURE="chercheur"
 if git diff --cached --name-only | grep -q '^plugins/ia-kit/agents/.*\.md$'; then
   REF_FILE=""
   REF_SUM=""
