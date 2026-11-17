@@ -1,7 +1,7 @@
 #!/bin/sh
 # Avant chaque commit :
 # 1) bloque si le tableau « Contenu du plugin » du README ne correspond plus aux éléments du plugin ;
-# 2) bloque si le bloc « Règles communes » n'est plus identique dans tous les agents ;
+# 2) bloque si le bloc « Règles communes » n'est plus identique dans tous les agents qui en ont un ;
 # 3) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
 #    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
@@ -15,12 +15,15 @@ node .githooks/verifier-readme.js
 
 # 2) Un agent modifié : le bloc « Règles communes » doit rester identique dans tous les agents
 #    (un agent ne voit que son propre fichier, d'où les copies). On compare les versions du commit.
+#    Les agents sans ce bloc (chercheur, lecteur : de petits agents de lecture) sont laissés de côté.
 if git diff --cached --name-only | grep -q '^plugins/ia-kit/agents/.*\.md$'; then
   REF_FILE=""
   REF_SUM=""
   DIFFERENTS=""
   for f in $(git ls-files 'plugins/ia-kit/agents/*.md'); do
-    SUM=$(git show ":$f" | awk '/^## Règles communes/ { on = 1; print; next } on && /^## / { exit } on' | shasum | cut -d' ' -f1)
+    BLOC=$(git show ":$f" | awk '/^## Règles communes/ { on = 1; print; next } on && /^## / { exit } on')
+    [ -n "$BLOC" ] || continue
+    SUM=$(printf '%s' "$BLOC" | shasum | cut -d' ' -f1)
     if [ -z "$REF_SUM" ]; then
       REF_FILE=$f
       REF_SUM=$SUM

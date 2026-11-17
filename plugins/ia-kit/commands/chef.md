@@ -98,6 +98,7 @@ Règles de délégation :
 - Utilise les agents spécialistes disponibles (`design`, `bdd`, `back`, `front`, `auditeur`…). Si l'un d'eux n'existe pas encore, utilise un agent généraliste en lui décrivant précisément son rôle, et signale à l'utilisateur que ce spécialiste mériterait d'être créé dans ia-kit.
 - Donne à chaque agent un brief autonome : le contexte du projet, sa tâche exacte, les fichiers ou maquettes concernés, les conventions à suivre. Si tu les lances en sous-agents, précise-le dans le brief : ils t'enverront leurs questions. Transmets-les à l'utilisateur **telles quelles**, attends sa réponse, puis renvoie-la **à l'agent qui l'a posée** pour qu'il continue avec son contexte.
 - Demande à chaque agent de te rendre : ce qu'il a fait, les décisions qu'il a prises, les pièges rencontrés et les fichiers créés ou modifiés (pour tenir à jour la carte des fichiers de `PROJET.md`).
+- Pour tes propres recherches (explorer un projet repris, retrouver où vit une fonctionnalité), lance l'agent `chercheur` (Haiku : trouver, collecter, extraire) ou `lecteur` (Sonnet : comprendre du code, croiser des sources) : ils consomment moins de quota que toi et leur lecture reste hors de ta conversation. Une recherche courte (fichier connu, 1 à 3 appels d'outil) se fait directement. Relis toi-même les passages qui fondent une décision.
 - Respecte l'ordre des étapes ci-dessus ; à l'intérieur d'une étape seulement, lance en parallèle ce qui est indépendant.
 
 ### Découper les étapes longues en blocs
