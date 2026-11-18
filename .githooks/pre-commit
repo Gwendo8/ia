@@ -8,6 +8,9 @@
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
 set -e
 
+# node et npm même quand le PATH est réduit (commit lancé depuis VS Code ouvert par le Dock).
+. plugins/ia-kit/hooks/node.sh
+
 MCP=plugins/ia-kit/mcp/pgadmin
 
 # 1) Le tableau « Contenu du plugin » du README doit correspondre au plugin, dans les deux sens
