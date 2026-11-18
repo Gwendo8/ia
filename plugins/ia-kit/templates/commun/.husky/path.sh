@@ -4,7 +4,10 @@
 # avec « npx: command not found ».
 # Même recherche de node que hooks/node.sh du plugin ia-kit : modifier les deux ensemble.
 if ! command -v node >/dev/null 2>&1; then
-  for dossier in /opt/homebrew/bin /usr/local/bin $(ls -d "$HOME"/.nvm/versions/node/*/bin 2>/dev/null | sort -V -r); do
+  # nvm d'abord (la version de .nvmrc si elle est installée, sinon la plus récente), puis Homebrew.
+  VERSION=$(cat .nvmrc 2>/dev/null | tr -d ' v\n')
+  for dossier in $(ls -d "$HOME"/.nvm/versions/node/v"$VERSION"*/bin 2>/dev/null | sort -V -r) \
+    $(ls -d "$HOME"/.nvm/versions/node/*/bin 2>/dev/null | sort -V -r) /opt/homebrew/bin /usr/local/bin; do
     if [ -x "$dossier/node" ]; then
       PATH="$dossier:$PATH"
       break

@@ -79,7 +79,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 - **Lecture seule partout**, sauf sur une base de test : nom en `_test` **et** serveur local.
 - Si pgAdmin est rangé ailleurs que d'habitude, indiquer le chemin de `pgadmin4.db` dans la variable d'environnement `PGADMIN_DB`.
 
-**Les hooks en node passent par `hooks/node.sh`.** Sur Mac, une application lancée depuis le Dock (VS Code, Cursor) ne lit pas `~/.zshrc` : son PATH ne contient ni Homebrew ni nvm, et `node` y est introuvable. Le lanceur cherche `node` dans le PATH, puis dans `/opt/homebrew/bin`, puis dans la version nvm la plus récente. Sans `node`, il se tait, pour ne jamais bloquer le travail. Le pre-commit du dépôt le charge aussi, pour trouver `node` et `npm`.
+**Les hooks en node passent par `hooks/node.sh`.** Sur Mac, une application lancée depuis le Dock (VS Code, Cursor) ne lit pas `~/.zshrc` : son PATH ne contient ni Homebrew ni nvm, et `node` y est introuvable. Le lanceur cherche `node` dans le PATH, puis dans nvm (la version du `.nvmrc` du projet si elle est installée, sinon la plus récente), puis dans Homebrew. Sans `node`, il se tait, pour ne jamais bloquer le travail. Le pre-commit du dépôt le charge aussi, pour trouver `node` et `npm`.
 
 **Le hook surveillance-contexte** tourne après chaque appel d'outil d'un agent `back`, `front` ou `auditeur` (jamais pour la session principale ni pour les autres agents).
 
