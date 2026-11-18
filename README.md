@@ -2,6 +2,8 @@
 
 Mon plugin Claude Code : skills, commandes, agents et hooks réutilisables d'un projet à l'autre.
 
+🗺️ **[Voir la carte du plugin](https://gwendo8.github.io/ia/carte.html)** : tout ia-kit d'un coup d'œil (agents, commandes, outils, gardiens). Elle est refaite à chaque commit par `.githooks/pre-commit` et mise en ligne par GitHub Pages à chaque push.
+
 ## Utilisation
 
 ### Installer (une fois par ordinateur, Mac comme Windows)
