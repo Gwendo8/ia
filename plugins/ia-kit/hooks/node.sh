@@ -1,6 +1,7 @@
 #!/bin/sh
 # Trouve node même quand le PATH est réduit au minimum. Exemple : sur Mac, une application lancée
 # depuis le Dock (VS Code, Cursor) ne lit pas ~/.zshrc, donc ni Homebrew ni nvm ne sont dans son PATH.
+# Même recherche que templates/commun/.husky/path.sh (copié dans chaque projet) : modifier les deux ensemble.
 # Ordre : node déjà dans le PATH, puis Homebrew, puis la version nvm la plus récente.
 #
 # Deux usages :

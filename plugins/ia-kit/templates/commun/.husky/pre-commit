@@ -1,2 +1,3 @@
+. .husky/path.sh
 npx lint-staged
 sh .husky/projet-sync.sh commit

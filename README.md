@@ -103,7 +103,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 - **Commit** (pre-commit Husky du projet) : si `PROJET.md` n'a pas suivi, le script lance `claude -p`, qui le met à jour (une quinzaine de secondes), puis l'ajoute au même commit. Une raison inconnue devient « ❓ à demander ». Si Claude est indisponible, le commit est bloqué (contournement : `git commit --no-verify`).
 - **Tout le monde peut écrire `PROJET.md`** (chef, agents, toi) : on relit juste avant d'écrire et on ne touche qu'à ce qui concerne son travail. En dépôts séparés, chaque dépôt a son propre `PROJET.md`.
 - Ignorés : `PROJET.md` lui-même, les fichiers de verrouillage et tout ce que `.gitignore` exclut (`node_modules`, `dist`, `.env`…). Le `claude -p` du commit tourne avec `IA_KIT_SYNC_OFF=1`, pour ne pas redéclencher les hooks en boucle.
-- **Projet créé avant ces hooks** : les hooks de conversation marchent déjà. Pour le commit, copier `templates/commun/.husky/projet-sync.sh` dans le `.husky/` du projet et ajouter la ligne `sh .husky/projet-sync.sh commit` à `.husky/pre-commit`.
+- **Projet créé avant ces hooks** : les hooks de conversation marchent déjà. Pour le commit, copier `templates/commun/.husky/projet-sync.sh` dans le `.husky/` du projet et ajouter la ligne `sh .husky/projet-sync.sh commit` à `.husky/pre-commit`. Pour commiter depuis VS Code ou Cursor ouvert par le Dock (PATH réduit, `npx: command not found`), copier aussi `templates/commun/.husky/path.sh` et mettre `. .husky/path.sh` en première ligne de `.husky/pre-commit`.
 
 ## Compléments à installer (une fois par ordinateur)
 
@@ -133,6 +133,7 @@ plugins/ia-kit/
 ├── templates/                    # modèles copiés par /squelette-client et /squelette-server
 │                                 #   (commun/.husky/projet-sync.sh = script des hooks projet-sync)
 │                                 #   (commun/.husky/commit-msg = retire Co-Authored-By Claude des commits)
+│                                 #   (commun/.husky/path.sh = retrouve node, npx et claude quand le PATH est réduit)
 ├── .mcp.json                     # déclare les serveurs MCP du plugin
 ├── mcp/pgadmin/                  # code du MCP pgadmin (dist/ = version compilée, commitée)
 └── hooks/                        # hooks (actions automatiques)
