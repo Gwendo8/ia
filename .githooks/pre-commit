@@ -3,6 +3,7 @@
 # 1) bloque si le tableau « Contenu du plugin » du README ne correspond plus aux éléments du plugin ;
 # 2) bloque si un agent n'a pas le bloc « Règles communes » ou s'il n'est plus identique partout
 #    (sauf les agents de lecture listés dans AGENTS_LECTURE) ;
+# 2 bis) bloque si une commande de spécialiste ne renvoie pas vers regles/qui-fait-le-travail.md ;
 # 3) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
 #    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
@@ -60,6 +61,22 @@ if git diff --cached --name-only | grep -q '^plugins/ia-kit/agents/.*\.md$'; the
     echo "Recopie le même bloc dans tous les agents, puis recommite."
     exit 1
   fi
+fi
+
+# 2 bis) Chaque commande de spécialiste (elle fait appliquer un agent « directement dans cette session »)
+#    doit renvoyer vers la règle commune « Qui fait le travail ». Une nouvelle commande est vérifiée d'office.
+REGLE=regles/qui-fait-le-travail.md
+SANS_REGLE=""
+for f in $(git ls-files 'plugins/ia-kit/commands/*.md'); do
+  CONTENU=$(git show ":$f" 2>/dev/null || true)
+  case "$CONTENU" in *"directement dans cette session"*) ;; *) continue ;; esac
+  case "$CONTENU" in *"$REGLE"*) ;; *) SANS_REGLE="$SANS_REGLE
+  - $f" ;; esac
+done
+if [ -n "$SANS_REGLE" ]; then
+  echo "pre-commit : commit bloqué, ces commandes de spécialiste ne renvoient pas vers $REGLE :$SANS_REGLE"
+  echo "Ajoute-leur la ligne : Lis aussi \`\${CLAUDE_PLUGIN_ROOT}/$REGLE\` et applique-le […]"
+  exit 1
 fi
 
 # 3) Code du MCP pgadmin modifié : on régénère dist/.
