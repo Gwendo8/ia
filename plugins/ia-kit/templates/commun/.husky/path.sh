@@ -14,7 +14,8 @@ if ! command -v node >/dev/null 2>&1; then
     fi
   done
 fi
-if ! command -v claude >/dev/null 2>&1 && [ -x "$HOME/.local/bin/claude" ]; then
+# claude.exe : nom de la commande sous Windows (Git Bash).
+if ! command -v claude >/dev/null 2>&1 && { [ -x "$HOME/.local/bin/claude" ] || [ -x "$HOME/.local/bin/claude.exe" ]; }; then
   PATH="$HOME/.local/bin:$PATH"
 fi
 export PATH
