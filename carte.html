@@ -1,0 +1,204 @@
+<!doctype html>
+<!-- Fichier généré par .githooks/carte.mjs à chaque commit : ne pas le modifier à la main. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carte d'ia-kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Carte mentale : ia-kit au centre, deux branches de chaque côté, reliées par des courbes. */
+:root {
+  --bg: #F5F6FA; --carte: #FFFFFF; --texte: #1B2133; --doux: #5D6579; --trait: #DDE1EA;
+  --equipe: #E2683C; --outils: #1C9A6C; --cmd: #2F6BD8; --gardiens: #7B55C9;
+  --titre: "Outfit", "Avenir Next", system-ui, sans-serif;
+  --corps: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #11141C; --carte: #1A1F2B; --texte: #E8EBF2; --doux: #9AA2B4; --trait: #2B3242;
+    --equipe: #F2875F; --outils: #3CC492; --cmd: #6A97F0; --gardiens: #A585EC; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--texte); font: 15px/1.5 var(--corps); padding: 28px max(16px, 3vw) 48px; }
+header { max-width: 1280px; margin: 0 auto 8px; text-align: center; }
+header p { margin: 4px 0 0; color: var(--doux); }
+.carte { position: relative; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 220px minmax(0, 1fr); gap: 28px; align-items: center; }
+svg.liens { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+svg.liens path { fill: none; stroke-width: 4; stroke-linecap: round; opacity: .55; }
+.colonne { display: flex; flex-direction: column; gap: 28px; min-width: 0; position: relative; z-index: 1; }
+.centre { display: flex; justify-content: center; position: relative; z-index: 1; }
+.coeur { width: 190px; height: 190px; border-radius: 50%; background: var(--texte); color: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 0 0 10px var(--carte), 0 0 0 11px var(--trait); }
+.coeur strong { font: 800 34px/1 var(--titre); }
+.coeur small { margin-top: 6px; font-size: 13px; opacity: .8; }
+.branche { --c: var(--texte); background: var(--carte); border: 1px solid var(--trait); border-radius: 18px; padding: 16px 18px 14px; }
+.b-equipe { --c: var(--equipe); } .b-outils { --c: var(--outils); } .b-cmd { --c: var(--cmd); } .b-gardiens { --c: var(--gardiens); }
+.bulle { margin: 0; display: inline-flex; align-items: center; gap: 10px; background: var(--c); color: #fff; font: 700 20px/1 var(--titre); padding: 9px 16px; border-radius: 999px; }
+.bulle .nb { background: rgba(255,255,255,.25); border-radius: 999px; font-size: 13px; padding: 3px 8px; }
+.intro { margin: 8px 0 10px; color: var(--doux); font-size: 14px; }
+ul { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 3px solid color-mix(in srgb, var(--c) 45%, transparent); display: flex; flex-direction: column; gap: 4px; }
+li { position: relative; }
+li::before { content: ""; position: absolute; left: -14px; top: 19px; width: 11px; height: 3px; background: color-mix(in srgb, var(--c) 45%, transparent); }
+summary { list-style: none; cursor: pointer; display: flex; flex-direction: column; padding: 7px 34px 7px 10px; border-radius: 10px; position: relative; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; position: absolute; right: 10px; top: 6px; font: 700 18px/1 var(--titre); color: var(--c); transition: transform .2s; }
+details[open] summary::after { transform: rotate(45deg); }
+summary:hover, summary:focus-visible { background: color-mix(in srgb, var(--c) 10%, transparent); outline: none; }
+summary:focus-visible { box-shadow: 0 0 0 2px var(--c); }
+.nom { font: 700 16px/1.3 var(--titre); }
+.court { color: var(--doux); font-size: 14px; }
+.plus { padding: 2px 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+.plus p { margin: 0; font-size: 14px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { font-size: 12px; border: 1px solid var(--trait); border-radius: 999px; padding: 1px 9px; color: var(--doux); }
+footer { max-width: 1280px; margin: 28px auto 0; text-align: center; color: var(--doux); font-size: 13px; }
+@media (max-width: 860px) {
+  .carte { grid-template-columns: minmax(0, 1fr); }
+  .centre { order: -1; }
+  .coeur { width: 140px; height: 140px; }
+  .coeur strong { font-size: 26px; }
+  svg.liens { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { summary::after { transition: none; } }
+</style>
+</head>
+<body>
+<header>
+  <p>Clique sur un élément pour lire ce qu'il fait.</p>
+</header>
+<main class="carte" id="carte">
+  <svg class="liens" id="liens" aria-hidden="true"></svg>
+  <div class="colonne">
+    <section class="branche b-equipe" data-branche="equipe">
+      <h2 class="bulle"><span>L'équipe</span><span class="nb">6</span></h2>
+      <p class="intro">Les agents : des Claude spécialisés, chacun dans son métier.</p>
+      <ul>
+        <li><details>
+          <summary><span class="nom">Auditeur</span><span class="court">Passe le projet en revue, vérifie chaque problème, écrit AUDIT.md et les tests de bout en bout, sans corriger le code des autres.</span></summary>
+          <div class="plus"><p>Auditeur (sécurité, cohérence, qualité, tests, performance, accessibilité). Passe le projet en revue, vérifie chaque problème, écrit AUDIT.md et les tests de bout en bout, sans corriger le code des autres.</p><div class="tags"><span>Opus · le plus fort</span><span>agent ia-kit:auditeur</span><span>/ia-kit:auditeur</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Back</span><span class="court">Définit le contrat de l'API en dialogue avec l'utilisateur, puis code les routes, la validation, la logique métier, l'accès aux données et les tests.</span></summary>
+          <div class="plus"><p>Spécialiste API (Node.js + Express + Sequelize). Définit le contrat de l'API en dialogue avec l'utilisateur, puis code les routes, la validation, la logique métier, l'accès aux données et les tests.</p><div class="tags"><span>Sonnet · équilibré</span><span>agent ia-kit:back</span><span>/ia-kit:back</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">BDD</span><span class="court">Conçoit le schéma en dialogue avec l'utilisateur, puis crée la base, les migrations et les modèles.</span></summary>
+          <div class="plus"><p>Spécialiste base de données (PostgreSQL + Sequelize). Conçoit le schéma en dialogue avec l'utilisateur, puis crée la base, les migrations et les modèles.</p><div class="tags"><span>Opus · le plus fort</span><span>agent ia-kit:bdd</span><span>/ia-kit:bdd</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Chercheur</span><span class="court">Trouve des fichiers, collecte et extrait des informations dans beaucoup de fichiers, puis rend une liste de résultats avec chemins et numéros de ligne.</span></summary>
+          <div class="plus"><p>Chercheur en lecture seule, sur Haiku pour économiser le quota. Trouve des fichiers, collecte et extrait des informations dans beaucoup de fichiers, puis rend une liste de résultats avec chemins et numéros de ligne.</p><div class="tags"><span>Haiku · léger et économe</span><span>agent ia-kit:chercheur</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Design</span><span class="court">Recherche l'inspiration ciblée sur le projet, propose trois variantes en dialogue avec l'utilisateur, puis écrit DESIGN.md et les maquettes Figma.</span></summary>
+          <div class="plus"><p>Spécialiste design (UI, couleurs, typographie, animations). Recherche l'inspiration ciblée sur le projet, propose trois variantes en dialogue avec l'utilisateur, puis écrit DESIGN.md et les maquettes Figma.</p><div class="tags"><span>Opus · le plus fort</span><span>agent ia-kit:design</span><span>/ia-kit:design</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Front</span><span class="court">Présente son plan en dialogue avec l'utilisateur, puis code les écrans d'après DESIGN.md, les maquettes Figma et API.md, avec tests et vérification visuelle.</span></summary>
+          <div class="plus"><p>Spécialiste front-end (React + Vite + Tailwind). Présente son plan en dialogue avec l'utilisateur, puis code les écrans d'après DESIGN.md, les maquettes Figma et API.md, avec tests et vérification visuelle.</p><div class="tags"><span>Sonnet · équilibré</span><span>agent ia-kit:front</span><span>/ia-kit:front</span></div></div>
+        </details></li>
+      </ul>
+    </section>
+    <section class="branche b-outils" data-branche="outils">
+      <h2 class="bulle"><span>Outils</span><span class="nb">2</span></h2>
+      <p class="intro">Des outils en plus que le plugin branche sur Claude.</p>
+      <ul>
+        <li><details>
+          <summary><span class="nom">Pgadmin</span><span class="court">Lit tes bases PostgreSQL, sans jamais pouvoir les modifier.</span></summary>
+          <div class="plus"><p>Écrit pour ia-kit : MCP qui s'appuie sur la liste des serveurs de pgAdmin pour lire les bases PostgreSQL (lecture seule).</p><div class="tags"><span>serveur MCP</span><span>lecture seule</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Playwright</span><span class="court">Un navigateur que Claude pilote : ouvrir une page, cliquer, prendre une capture.</span></summary>
+          <div class="plus"><p>Fourni par le paquet @playwright/mcp@0.0.83.</p><div class="tags"><span>serveur MCP</span></div></div>
+        </details></li>
+      </ul>
+    </section>
+  </div>
+  <div class="centre"><div class="coeur" id="coeur"><strong>ia-kit</strong><small>ton plugin</small></div></div>
+  <div class="colonne">
+    <section class="branche b-cmd" data-branche="cmd">
+      <h2 class="bulle"><span>Commandes</span><span class="nb">6</span></h2>
+      <p class="intro">Ce que tu tapes dans Claude Code pour lancer quelque chose.</p>
+      <ul>
+        <li><details>
+          <summary><span class="nom">Chef de projet</span><span class="court">Cadre un nouveau projet puis dirige les agents spécialistes</span></summary>
+          <div class="plus"><p>À taper avec : [idée du projet, ou chemin/lien vers un cahier des charges]</p><div class="tags"><span>/ia-kit:chef</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Cahier des charges</span><span class="court">Part de ton idée, te pose des questions et rédige CAHIER-DES-CHARGES.md</span></summary>
+          <div class="plus"><p>À taper avec : [idée du projet, ou chemin vers un cahier des charges à compléter]</p><div class="tags"><span>/ia-kit:cahier-des-charges</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Etat serveur</span><span class="court">Bilan de santé d'un serveur Linux joignable en SSH, en lecture seule</span></summary>
+          <div class="plus"><p>Bilan de santé d'un serveur Linux joignable en SSH (services, disque, mémoire, mises à jour), en lecture seule À taper avec : [hôte-ssh]</p><div class="tags"><span>/ia-kit:etat-serveur</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Mesure agents</span><span class="court">Mesure ce qu'a consommé une session, modèle par modèle</span></summary>
+          <div class="plus"><p>Mesure ce qu'a consommé une session (conversation principale, agents et sous-agents), modèle par modèle À taper avec : [id-de-session] [dossier-du-projet]</p><div class="tags"><span>/ia-kit:mesure-agents</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Squelette client</span><span class="court">Crée le squelette du client d'un projet</span></summary>
+          <div class="plus"><p>Crée le squelette du client (React + Vite + Tailwind) d'un projet À taper avec : [nom-du-projet] [mono|separe]</p><div class="tags"><span>/ia-kit:squelette-client</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Squelette server</span><span class="court">Crée le squelette du serveur d'un projet</span></summary>
+          <div class="plus"><p>Crée le squelette du serveur (Node.js + Express + Sequelize) d'un projet À taper avec : [nom-du-projet] [mono|separe]</p><div class="tags"><span>/ia-kit:squelette-server</span></div></div>
+        </details></li>
+      </ul>
+    </section>
+    <section class="branche b-gardiens" data-branche="gardiens">
+      <h2 class="bulle"><span>Gardiens</span><span class="nb">5</span></h2>
+      <p class="intro">Ils travaillent tout seuls, au bon moment, sans qu’on le demande.</p>
+      <ul>
+        <li><details>
+          <summary><span class="nom">À chaque message que tu envoies</span><span class="court">Repère les messages où l'utilisatrice corrige Claude.</span></summary>
+          <div class="plus"><p>Script : reperage-erreurs.mjs.</p><div class="tags"><span>hook</span><span>UserPromptSubmit</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Après chaque outil utilisé par Claude</span><span class="court">Surveille le contexte des agents back, front et auditeur.</span></summary>
+          <div class="plus"><p>Script : surveillance-contexte.mjs.</p><div class="tags"><span>hook</span><span>PostToolUse</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Au début de chaque conversation</span><span class="court">Signale à Claude ce qui a changé depuis la dernière mise à jour de PROJET.md.</span></summary>
+          <div class="plus"><p>Script : projet-sync.sh (mode debut).</p><div class="tags"><span>hook</span><span>SessionStart</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">À la fin de chaque réponse</span><span class="court">Si du code a changé sans que PROJET.md suive, empêche Claude de s'arrêter et lui demande la mise à jour.</span></summary>
+          <div class="plus"><p>Script : projet-sync.sh (mode fin).</p><div class="tags"><span>hook</span><span>Stop</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Skill erreurs</span><span class="court">Note une erreur de Claude dans le journal global des erreurs, et la passe en règle permanente quand elle revient.</span></summary>
+          <div class="plus"><p> Il se déclenche tout seul quand la situation le demande.</p><div class="tags"><span>skill</span></div></div>
+        </details></li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer>Carte refaite automatiquement à chaque commit du dépôt ia, à partir des fichiers du plugin.</footer>
+<script>
+(function () {
+  var carte = document.getElementById('carte'), svg = document.getElementById('liens'), coeur = document.getElementById('coeur');
+  function dessiner() {
+    var base = carte.getBoundingClientRect(), c = coeur.getBoundingClientRect();
+    var cx = c.left + c.width / 2 - base.left, cy = c.top + c.height / 2 - base.top;
+    var traits = '';
+    document.querySelectorAll('.branche').forEach(function (b) {
+      var bulle = b.querySelector('.bulle').getBoundingClientRect();
+      var gauche = bulle.left + bulle.width / 2 < cx + base.left;
+      var x = (gauche ? b.getBoundingClientRect().right : b.getBoundingClientRect().left) - base.left;
+      var y = bulle.top + bulle.height / 2 - base.top;
+      var mx = (cx + x) / 2;
+      var couleur = getComputedStyle(b).getPropertyValue('--c');
+      traits += '<path d="M' + cx + ' ' + cy + ' C' + mx + ' ' + cy + ' ' + mx + ' ' + y + ' ' + x + ' ' + y + '" stroke="' + couleur + '"/>';
+    });
+    svg.innerHTML = traits;
+  }
+  dessiner();
+  if (window.ResizeObserver) new ResizeObserver(dessiner).observe(carte);
+  window.addEventListener('resize', dessiner);
+})();
+</script>
+</body>
+</html>

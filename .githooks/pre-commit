@@ -6,6 +6,7 @@
 # 2 bis) bloque si une commande de spécialiste ne renvoie pas vers regles/qui-fait-le-travail.md ;
 # 3) si le code du MCP pgadmin a changé, régénère son fichier regroupé (dist/) et l'ajoute au commit,
 #    pour que les postes qui installent le plugin reçoivent toujours la bonne version.
+# 4) régénère carte.html (carte mentale du plugin, lue dans ses fichiers) et l'ajoute au commit.
 # Activation (une fois par poste où on développe) : git config core.hooksPath .githooks
 set -e
 
@@ -88,3 +89,7 @@ if git diff --cached --name-only | grep -v "^$MCP/dist/" | grep -q "^$MCP/"; the
   cd - > /dev/null
   git add "$MCP/dist/pgadmin-mcp.js"
 fi
+
+# 4) Carte du plugin : régénérée à chaque commit, pour suivre les éléments ajoutés ou retirés.
+node .githooks/carte.mjs
+git add carte.html
