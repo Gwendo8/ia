@@ -14,3 +14,6 @@
 # Dépendances éventuelles (scripts de hooks)
 node_modules/
 __pycache__/
+
+# Réglages d’Obsidian (coffre local)
+.obsidian/
