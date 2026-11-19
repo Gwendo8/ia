@@ -55,6 +55,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | `/auditeur` | commande | Lance un audit complet ou ciblé directement dans la conversation. |
 | `/etat-serveur` | commande | Bilan de santé d'un serveur Linux joignable en SSH : services, disque, mémoire, température, mises à jour, erreurs des dernières 24 h, adresse publique. Lecture seule : ne modifie rien, ne lance aucun `sudo`. Argument : `[hôte-ssh]` (par défaut `maison`). |
 | `/mesure-agents` | commande | Mesure ce qu'a consommé une session : la conversation principale, chaque agent et ses sous-agents, modèle par modèle (Opus, Sonnet, Haiku), avec le contexte maximal et un équivalent en tarif API. Sert à vérifier qu'un réglage (délégation, blocs…) fait vraiment gagner du quota. Lecture seule. Arguments : `[id-de-session] [dossier-du-projet]`, par défaut la conversation en cours. |
+| `/menage-memoire` | commande | Ménage mensuel de la mémoire : relit ton `~/.claude/CLAUDE.md`, le journal des erreurs et la mémoire du projet, repère ce qui est périmé, en double, contradictoire, mal rangé ou trop long, et propose les corrections. Ne modifie rien sans ton accord, point par point. |
 | `bdd` | agent | Conçoit le schéma avec toi, puis crée la base, les migrations et les modèles (PostgreSQL + Sequelize). |
 | `back` | agent | Définit le contrat de l'API avec toi, puis code les routes, la logique et les tests. |
 | `design` | agent | Recherche l'inspiration ciblée sur le projet, te propose trois variantes, puis écrit `DESIGN.md` et les maquettes Figma. Gère aussi les refontes. |
@@ -66,6 +67,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | `projet-sync` | hooks | Gardent `PROJET.md` à jour tout seuls : en début de conversation (rattrape tes modifications manuelles), à la fin de chaque demande qui a modifié le projet, et à chaque commit (Claude met `PROJET.md` à jour et l'ajoute au même commit). Ne font rien dans un projet sans `PROJET.md`. Script : `templates/commun/.husky/projet-sync.sh` (copié dans chaque projet par les squelettes). |
 | `surveillance-contexte` | hooks | Prévient les agents `back`, `front` et `auditeur` quand leur contexte dépasse 250 000 tokens (ils relisent tout à chaque réponse, donc consomment beaucoup de quota) : ils terminent la fonctionnalité en cours, mettent `PROJET.md` à jour et rendent la main au chef, qui lance un agent neuf. Script : `hooks/surveillance-contexte.mjs`. |
 | `reperage-erreurs` | hooks | Quand ton message ressemble à une correction (« tu as oublié », « c'est faux », « ça marche pas »…), rappelle à Claude de vérifier s'il a fait une erreur à noter avec le skill `erreurs`. Sans mot repéré, ne fait rien. Script : `hooks/reperage-erreurs.mjs`. |
+| `rappel-menage` | hooks | Au lancement d'une conversation, si le dernier `/menage-memoire` date de plus de 30 jours, demande à Claude de te le rappeler en une phrase (une fois par jour au plus). Date gardée dans `~/.claude/menage-memoire.json`. Script : `hooks/rappel-menage.mjs`. |
 | `erreurs` | skill | Journal global des erreurs de Claude (`~/.claude/erreurs.md`) : une erreur vue une fois y est notée ; si elle revient, elle devient une règle dans la section « Erreurs à ne pas refaire » de ton `~/.claude/CLAUDE.md` et quitte le journal ; si elle revient malgré la règle, Claude propose un hook. Seul skill du plugin : ici on veut justement qu'il se déclenche sans qu'on y pense (ailleurs, on préfère les commandes). |
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
@@ -93,7 +95,8 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 **Le journal des erreurs** (hook `reperage-erreurs` + skill `erreurs`) sert à ne pas refaire deux fois la même erreur, quel que soit le projet.
 
 - **Le réveil** : un hook ne comprend pas le sens d'un message. Il cherche des tournures typiques d'une correction (des tournures entières plutôt que des mots seuls comme « non » ou « erreur », qui déclencheraient pour rien) et, s'il en trouve, glisse un rappel d'une ligne à Claude, qui juge si c'est vraiment une erreur. Les erreurs que Claude découvre lui-même (corrigées seul, révélées par un test, un audit, un bug trouvé plus tard) passent par une consigne du `~/.claude/CLAUDE.md` global (« dis-le et note-la »), car aucun hook ne peut les repérer.
-- **Les paliers** : journal (vue une fois) → règle dans le CLAUDE.md global (revenue) → hook proposé (revenue malgré la règle).
+- **Les paliers** : journal (vue une fois) → règle dans le CLAUDE.md global (revenue dans une autre conversation ; répétée dans la même, elle reste au journal) → hook proposé (revenue malgré la règle). Avant d'ajouter une règle, Claude regarde si une règle existante dit déjà la même chose, pour l'élargir plutôt qu'en ajouter une.
+- **Le ménage** : `/menage-memoire`, rappelé chaque mois par le hook `rappel-menage`, fusionne les règles qui se ressemblent et retire les lignes du journal jamais revenues.
 - **Coût** : le journal n'est jamais lu au démarrage, Claude cherche dedans seulement quand une erreur arrive. Seules les erreurs passées en règle sont lues à chaque conversation (une ligne chacune).
 - Le journal et la section « Erreurs à ne pas refaire » vivent dans `~/.claude/`, hors du dépôt : ils sont propres à chaque ordinateur.
 
@@ -142,7 +145,8 @@ plugins/ia-kit/
     ├── hooks.json                #   déclaration des hooks
     ├── node.sh                   #   lanceur : trouve node même quand le PATH est réduit
     ├── surveillance-contexte.mjs #   script du hook surveillance-contexte
-    └── reperage-erreurs.mjs      #   script du hook reperage-erreurs
+    ├── reperage-erreurs.mjs      #   script du hook reperage-erreurs
+    └── rappel-menage.mjs         #   script du hook rappel-menage
 ```
 
 ## Développer

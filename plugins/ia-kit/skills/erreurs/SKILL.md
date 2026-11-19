@@ -28,10 +28,13 @@ Non si c'est une simple préférence nouvelle (elle va dans la mémoire habituel
 - AAAA-MM-JJ | projet | mots-clés | ce qui s'est passé, en une phrase
 ```
 
-**Déjà dans le journal** (elle revient) →
-1. L'ajouter au CLAUDE.md global, section `## Erreurs à ne pas refaire` (la créer en fin de fichier si elle manque), en une ligne écrite en positif, avec le pourquoi :
+**Déjà dans le journal, ligne écrite pendant la conversation en cours** → elle se répète sur la lancée, ce n'est pas encore une habitude. Compléter la ligne existante (« revue le même jour ») et en rester là.
+
+**Déjà dans le journal, ligne écrite dans une autre conversation** (elle revient vraiment) →
+1. Avant d'écrire, regarder si une règle existante de la section dit déjà la même chose avec d'autres mots. Si oui, l'élargir (un exemple de plus, une date de plus) plutôt que d'ajouter une ligne.
+2. Sinon, l'ajouter au CLAUDE.md global, section `## Erreurs à ne pas refaire` (la créer en fin de fichier si elle manque), en une ligne écrite en positif, avec le pourquoi :
    `- **Thème** : ce qu'il faut faire. Pourquoi : … (vue le AAAA-MM-JJ et le AAAA-MM-JJ)`
-2. Supprimer sa ligne du journal : la règle prend le relais.
+3. Supprimer sa ligne du journal : la règle prend le relais.
 
 Exception : si l'erreur ne peut arriver que dans un seul projet (nom de table, chemin propre à ce projet), la mettre dans la mémoire de ce projet plutôt que dans le CLAUDE.md global.
 
