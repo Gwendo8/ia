@@ -67,17 +67,24 @@ Lis tout ce qui existe, puis pose tes questions (règle commune 12) :
 
 ## 3. Proposer trois variantes
 
-Si le skill `frontend-design` est installé, applique sa méthode. Pour chaque variante :
-- une **direction** nommée et expliquée en deux phrases, avec les inspirations qui l'ont nourrie ;
+Si le skill `frontend-design` est installé, applique sa méthode.
+
+Chaque variante part d'un **concept tiré du sujet du projet** : un objet, un lieu ou un geste de son domaine, qui donne à l'appli ses propres formes et sa propre façon d'afficher l'information. Exemple pour une appli de cuisine et de calories : le ticket de caisse (on « fait l'addition »), la cocotte émaillée, le dossard de course. Une variante qui ne change que les couleurs, la police ou les arrondis d'une même structure n'est pas une variante : c'est un réglage, à proposer seulement après le choix du concept.
+
+Pour chaque variante :
+- une **direction** nommée et expliquée en deux phrases : le concept, les objets qu'il emprunte, et les inspirations qui l'ont nourrie ;
 - une fiche courte au format de `DESIGN.md` (voir plus bas) ;
-- une **page d'aperçu** autonome, `design/variantes/<n>-<nom>.html`, qui montre un vrai morceau de l'appli dans ce style, avec ses vraies données : navigation, carte, tableau, formulaire, boutons, états (survol, focus, erreur, vide), et les animations prévues. Polices via Google Fonts, aucune autre dépendance. L'utilisateur l'ouvre dans son navigateur.
+- une **page d'aperçu** autonome, `design/variantes/<n>-<nom>.html`, qui montre un vrai morceau de l'appli dans ce style, avec ses vraies données : navigation, carte, tableau, formulaire, boutons, états (survol, focus, erreur, vide), et les animations prévues. Elle montre **toujours la version téléphone et la version ordinateur** des écrans clés (au minimum une liste et l'écran principal du projet), dès la première version : l'utilisateur juge un style sur les deux formats. Polices via Google Fonts, aucune autre dépendance. L'utilisateur l'ouvre dans son navigateur.
+
+Toute page d'aperçu montrée plus tard (une piste, une retouche, une comparaison de polices ou de dispositions) suit la même règle : téléphone et ordinateur.
 
 Les trois variantes doivent être **vraiment différentes** (pas trois nuances de la même idée). Avant de les montrer, relis-les contre les **choix par défaut des IA**, à éviter sauf si l'utilisateur les demande :
 - palettes « IA » : crème et terracotta, violet et indigo, noir avec un seul accent vert acide ;
 - tout en Inter, plus de deux polices, monospace hors du code ;
 - petits libellés en majuscules au-dessus de chaque titre, numérotation « 01 / 02 / 03 », mot du titre mis en couleur ;
 - dégradés, effet verre, ombres grises partout, grilles de cartes avec une icône en haut, flèche → dans chaque bouton, emojis en guise d'icônes ;
-- le même fondu-glissé sur tout.
+- le même fondu-glissé sur tout ;
+- le **squelette générique** : cartes blanches arrondies toutes pareilles, pilules partout, grille de cartes centrées, police à empattements pour les titres et sans empattements pour le texte. Même avec de belles couleurs, ce squelette fait « fait par IA » : la structure doit venir du concept.
 
 Fais aussi le **test du concurrent** : si on peut remplacer le nom du projet par celui d'un concurrent sans que le design change de sens, il est trop générique. Vérifie enfin les **contrastes** (WCAG AA : 4,5:1 pour le texte).
 
