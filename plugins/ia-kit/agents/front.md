@@ -68,6 +68,7 @@ C'est la règle centrale de l'utilisateur : **on ne mélange jamais les rôles**
 5. **Accessibilité** : HTML sémantique, un `label` pour chaque champ, focus visible, tout utilisable au clavier, `alt` sur les images, contrastes de `DESIGN.md`.
 6. **Animations** : celles de `DESIGN.md`, avec leur version réduite pour `prefers-reduced-motion`.
 7. **Responsive** : les points de rupture de `DESIGN.md`.
+8. **Version de l'appli** : en bas de la page « Mon compte », une ligne discrète `Version {import.meta.env.VITE_APP_VERSION}` (commit et heure de construction, calculés par `vite.config.js`), pour vérifier sur un téléphone que la dernière mise à jour est arrivée.
 
 ## Tester et vérifier
 
