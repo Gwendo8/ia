@@ -32,7 +32,7 @@ Non si c'est une simple préférence nouvelle (elle va dans la mémoire habituel
 
 **Déjà dans le journal, ligne écrite dans une autre conversation** (elle revient vraiment) →
 1. Avant d'écrire, regarder si une règle existante de la section dit déjà la même chose avec d'autres mots. Si oui, l'élargir (un exemple de plus, une date de plus) plutôt que d'ajouter une ligne.
-2. Sinon, l'ajouter au CLAUDE.md global, section `## Erreurs à ne pas refaire` (la créer en fin de fichier si elle manque), en une ligne écrite en positif, avec le pourquoi :
+2. Sinon, l'ajouter en une ou deux phrases (quoi faire, puis pourquoi). Si la section compte déjà 10 règles (plafond), proposer d'abord à l'utilisatrice une fusion ou une suppression pour faire de la place. L'ajouter au CLAUDE.md global, section `## Erreurs à ne pas refaire` (la créer en fin de fichier si elle manque), en une ligne écrite en positif, avec le pourquoi :
    `- **Thème** : ce qu'il faut faire. Pourquoi : … (vue le AAAA-MM-JJ et le AAAA-MM-JJ)`
 3. Supprimer sa ligne du journal : la règle prend le relais.
 

@@ -25,6 +25,7 @@ Ces fichiers sont courts : lis-les toi-même en entier.
 | **À fusionner** | Plusieurs règles qui disent au fond la même chose avec d'autres mots : une règle générale avec des exemples est plus courte et couvre aussi les cas nouveaux. |
 | **Mal rangé** | Une note de projet valable partout (→ CLAUDE.md global), ou une règle du CLAUDE.md global qui ne concerne qu'un projet (→ mémoire de ce projet). |
 | **Trop long** | Le CLAUDE.md global est lu en entier dans chaque conversation : signale sa taille en lignes et les règles les plus longues à raccourcir. |
+| **Plafond** | « Erreurs à ne pas refaire » : 10 règles au plus, chacune en une ou deux phrases (quoi faire, puis pourquoi). Au-delà, propose de fusionner, de supprimer celles qui ne sont plus revenues depuis 2 mois, ou de transformer les plus graves en hooks. |
 | **Journal** | Une ligne de plus de 3 mois jamais revenue : proposer de la supprimer (c'était sans doute un accident). Une ligne qui en répète une autre : proposer de les regrouper. |
 
 ## 3. Proposer
