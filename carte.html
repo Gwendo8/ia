@@ -153,12 +153,16 @@ footer { max-width: 1280px; margin: 28px auto 0; text-align: center; color: var(
       </ul>
     </section>
     <section class="branche b-gardiens" data-branche="gardiens">
-      <h2 class="bulle"><span>Gardiens</span><span class="nb">6</span></h2>
+      <h2 class="bulle"><span>Gardiens</span><span class="nb">7</span></h2>
       <p class="intro">Ils travaillent tout seuls, au bon moment, sans qu’on le demande.</p>
       <ul>
         <li><details>
           <summary><span class="nom">À chaque message que tu envoies</span><span class="court">Repère les messages où l'utilisatrice corrige Claude.</span></summary>
           <div class="plus"><p>Script : reperage-erreurs.mjs.</p><div class="tags"><span>hook</span><span>UserPromptSubmit</span></div></div>
+        </details></li>
+        <li><details>
+          <summary><span class="nom">Avant chaque outil utilisé par Claude</span><span class="court">Garde-fou « même modèle ».</span></summary>
+          <div class="plus"><p>Script : meme-modele.mjs.</p><div class="tags"><span>hook</span><span>PreToolUse</span></div></div>
         </details></li>
         <li><details>
           <summary><span class="nom">Après chaque outil utilisé par Claude</span><span class="court">Surveille le contexte des agents back, front et auditeur.</span></summary>

@@ -68,6 +68,7 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 | `surveillance-contexte` | hooks | Prévient les agents `back`, `front` et `auditeur` quand leur contexte dépasse 250 000 tokens (ils relisent tout à chaque réponse, donc consomment beaucoup de quota) : ils terminent la fonctionnalité en cours, mettent `PROJET.md` à jour et rendent la main au chef, qui lance un agent neuf. Script : `hooks/surveillance-contexte.mjs`. |
 | `reperage-erreurs` | hooks | Quand ton message ressemble à une correction (« tu as oublié », « c'est faux », « ça marche pas »…), rappelle à Claude de vérifier s'il a fait une erreur à noter avec le skill `erreurs`. Sans mot repéré, ne fait rien. Script : `hooks/reperage-erreurs.mjs`. |
 | `rappel-menage` | hooks | Au lancement d'une conversation, si le dernier `/menage-memoire` date de plus de 30 jours, demande à Claude de te le rappeler en une phrase (une fois par jour au plus). Date gardée dans `~/.claude/menage-memoire.json`. Script : `hooks/rappel-menage.mjs`. |
+| `meme-modele` | hooks | Avant de lancer un agent ia-kit, compare son modèle à celui de la conversation : si c'est le même, te demande de confirmer (l'agent repartirait de zéro pour le même résultat, règle `regles/qui-fait-le-travail.md`). Agent moins cher ou plus cher : ne fait rien. Script : `hooks/meme-modele.mjs`. |
 | `erreurs` | skill | Journal global des erreurs de Claude (`~/.claude/erreurs.md`) : une erreur vue une fois y est notée ; si elle revient, elle devient une règle dans la section « Erreurs à ne pas refaire » de ton `~/.claude/CLAUDE.md` et quitte le journal ; si elle revient malgré la règle, Claude propose un hook. Seul skill du plugin : ici on veut justement qu'il se déclenche sans qu'on y pense (ailleurs, on préfère les commandes). |
 
 **Commande ou agent ?** La commande (`/bdd`) fait travailler la conversation en cours, en dialogue direct avec toi. L'agent (`bdd`) est appelé par `/chef` et travaille dans son coin, puis lui rend compte. C'est le même fichier d'instructions dans les deux cas.
@@ -99,6 +100,12 @@ Inutile sur le poste où le catalogue a été ajouté depuis le dossier local (`
 - **Le ménage** : `/menage-memoire`, rappelé chaque mois par le hook `rappel-menage`, fusionne les règles qui se ressemblent, retire les lignes du journal jamais revenues, et fait respecter un **plafond de 10 règles** dans « Erreurs à ne pas refaire », chacune en une ou deux phrases (au-delà, une règle n'entre qu'en en fusionnant ou en retirant une autre).
 - **Coût** : le journal n'est jamais lu au démarrage, Claude cherche dedans seulement quand une erreur arrive. Seules les erreurs passées en règle sont lues à chaque conversation (une ligne chacune).
 - Le journal et la section « Erreurs à ne pas refaire » vivent dans `~/.claude/`, hors du dépôt : ils sont propres à chaque ordinateur.
+
+**Le hook meme-modele** tourne avant chaque lancement d'agent (outil `Agent`), seulement pour les agents ia-kit.
+
+- **Modèle de la conversation** : lu dans son fichier de session (dernière réponse). **Modèle de l'agent** : celui demandé au lancement, sinon la ligne `model:` de son fichier (`inherit` = même modèle que la conversation).
+- **Même famille** (Opus et Opus, Sonnet et Sonnet…) : fenêtre de confirmation, avec la raison. Tu acceptes si tu veux vraiment cet agent ; sinon Claude fait le travail lui-même.
+- Il ne bloque jamais à tort : modèle introuvable ou inconnu, erreur → il se tait. C'est le palier 3 du journal des erreurs : la règle seule n'avait pas suffi (agent `bdd` lancé depuis une conversation Opus sur Mijote).
 
 **Les hooks projet-sync** gardent `PROJET.md` (la carte du projet) à jour, même après tes modifications à la main.
 
@@ -146,7 +153,8 @@ plugins/ia-kit/
     ├── node.sh                   #   lanceur : trouve node même quand le PATH est réduit
     ├── surveillance-contexte.mjs #   script du hook surveillance-contexte
     ├── reperage-erreurs.mjs      #   script du hook reperage-erreurs
-    └── rappel-menage.mjs         #   script du hook rappel-menage
+    ├── rappel-menage.mjs         #   script du hook rappel-menage
+    └── meme-modele.mjs           #   script du hook meme-modele
 ```
 
 ## Développer
