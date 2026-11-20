@@ -31,6 +31,8 @@ Pour reprendre un projet en cours (nouvelle conversation entre deux étapes) : `
 
 Prérequis : **Node.js 22.13 ou plus** (le MCP pgadmin en a besoin) et, pour ce MCP, **pgAdmin** installé avec ses serveurs enregistrés.
 
+Le plugin n'a pas de numéro de version dans `plugin.json` : Claude Code prend le code du dernier commit (le SHA), donc chaque push est une nouvelle version, sans rien à changer à la main.
+
 Mettre à jour après un push, puis relancer Claude Code :
 
 ```bash
@@ -137,7 +139,7 @@ mkdir -p ~/.claude/skills/web-design-guidelines && curl -fsSL https://raw.github
 ```
 .claude-plugin/marketplace.json   # déclare les plugins du dépôt
 plugins/ia-kit/
-├── .claude-plugin/plugin.json    # infos du plugin (nom, version…)
+├── .claude-plugin/plugin.json    # infos du plugin (nom, description…)
 ├── skills/<nom>/SKILL.md         # skills, utilisés automatiquement par Claude (erreurs)
 ├── commands/<nom>.md             # commandes /slash
 ├── agents/<nom>.md               # sous-agents
