@@ -19,6 +19,7 @@ Ces fichiers sont courts : lis-les toi-même en entier.
 | Problème | Comment le repérer |
 | --- | --- |
 | **Périmé** | Une info qui n'est plus vraie : fichier, commande, outil ou réglage cité qui n'existe plus (vérifie-le), choix remplacé depuis, date ancienne sur un fait qui bouge. |
+| **À revérifier** | Un fait marqué « supposé », ou facile à contrôler (version d'un outil, chemin, programme installé, fichier cité) : vérifie-le maintenant dans la réalité (commande, fichier). Vrai → note « vérifié le AAAA-MM-JJ » ; faux → propose la correction ; invérifiable par toi (une préférence, un fait que seule l'utilisatrice connaît) → pose-lui la question. Un fait sans source ni certitude : propose d'en ajouter une. |
 | **Doublon** | La même règle à deux endroits (mémoire et CLAUDE.md, deux notes, deux sections). |
 | **Contradiction** | Deux règles qui demandent l'inverse. |
 | **À fusionner** | Plusieurs règles qui disent au fond la même chose avec d'autres mots : une règle générale avec des exemples est plus courte et couvre aussi les cas nouveaux. |
