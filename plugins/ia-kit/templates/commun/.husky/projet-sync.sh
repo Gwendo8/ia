@@ -99,8 +99,24 @@ case "$MODE" in
     ;;
   fin)
     [ -z "$CHANGES" ] && exit 0
+    ENTREE=$(cat)
+    # Ne garder que les fichiers touchés par cette conversation : ceux d'une autre conversation
+    # ouverte sur le même dépôt la regardent, elle. Fichiers touchés = chemin donné à Edit, Write,
+    # MultiEdit ou NotebookEdit, ou cité dans une commande Bash. Sans jq ni journal : tout est gardé.
+    JOURNAL=$(printf '%s' "$ENTREE" | sed -n 's/.*"transcript_path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+    if command -v jq >/dev/null 2>&1 && [ -f "$JOURNAL" ]; then
+      TOUCHES=$(jq -r 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")
+        | if (.name|test("^(Edit|Write|MultiEdit|NotebookEdit)$")) then (.input.file_path // .input.notebook_path // empty)
+          elif .name=="Bash" then .input.command else empty end' "$JOURNAL" 2>/dev/null)
+      CHANGES=$(printf '%s\n' "$CHANGES" | while IFS="$(printf '\t')" read -r ETAT CHEMIN AUTRE; do
+        [ -z "$CHEMIN" ] && continue
+        printf '%s\n' "$TOUCHES" | grep -qF -e "$CHEMIN" -e "${AUTRE:-$CHEMIN}" && printf '%s\t%s\n' "$ETAT" "$CHEMIN"
+      done)
+      # Rien de cette conversation : on ne dit rien et on n'avance pas la synchro (l'autre conversation s'en charge).
+      [ -z "$CHANGES" ] && exit 0
+    fi
     # Claude a déjà été relancé une fois pour cette demande, ou PROJET.md a été retouché : on avance la synchro.
-    if [ -n "$PROJET_RETOUCHE" ] || grep -Eq '"stop_hook_active"[[:space:]]*:[[:space:]]*true'; then
+    if [ -n "$PROJET_RETOUCHE" ] || printf '%s' "$ENTREE" | grep -Eq '"stop_hook_active"[[:space:]]*:[[:space:]]*true'; then
       ecrire_marque
       exit 0
     fi
